@@ -6,7 +6,7 @@ ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(TEOCCL_CFLAGS)
+	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(TEOBASE_CFLAGS)
 
 AM_CFLAGS = \
 	-g -Wall \
@@ -38,20 +38,20 @@ LIBS =
 
 lib_LTLIBRARIES = libteobase.la
 
-libteoccl_la_SOURCES = \
+libteobase_la_SOURCES = \
 	teobase/socket.c \
 	teobase/time.c \
 	teobase/logging.c
 
-libteocclincludedir=$(includedir)/libteoccl
+libteobaseincludedir=$(includedir)/libteobase
 
-nobase_libteocclinclude_HEADERS = \
+nobase_libteobaseinclude_HEADERS = \
 	../include/teobase/platform.h \
 	../include/teobase/socket.h \
 	../include/teobase/time.h \
 	../include/teobase/logging.h \
 	../include/teobase/windows.h
 
-libteoccl_la_LDFLAGS = $(AM_LDFLAGS) -version-info $(LIBRARY_MAJOR_VERSION):0:0
+libteobase_la_LDFLAGS = $(AM_LDFLAGS) -version-info $(LIBRARY_CURRENT):$(LIBRARY_REVISION):$(LIBRARY_AGE)
 
-libteoccl_la_LIBADD = $(TEOCCL_LIBS)
+libteobase_la_LIBADD = $(TEOBASE_LIBS)
