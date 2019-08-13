@@ -121,3 +121,4 @@ Makefile
 src/Makefile
 po/Makefile.in
 ])
+AC_CONFIG_SUBDIRS([libs/teoccl])
