@@ -1,17 +1,43 @@
 #
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
-AC_INIT(teobase, 0.0.1, [email@example.com])
-AC_DEFINE([PACKAGE_DESCRIPTION], ["teobase application"], [Application description])
-AC_DEFINE([PACKAGE_DEPENDENCIES], ["libteonet-dev"], [Application dependencies])
-AC_CONFIG_SRCDIR([src/main.c])
-AC_CONFIG_HEADERS([src/config.h])
 
-m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
-#AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
-AM_INIT_AUTOMAKE()
-AM_MAINTAINER_MODE
+
+# SUBROUTINE
+#
+# AC_DEFINE_SUBST(NAME, VALUE, DESCRIPTION)
+# -----------------------------------------
+AC_DEFUN([AC_DEFINE_SUBST], [
+AC_DEFINE([$1], [$2], [$3])
+AC_SUBST([$1], ['$2'])
+])
+# END
+
+AC_PREREQ([2.69])
+
+AC_INIT(teobase, 0.0.1, [email@example.com])
+AC_DEFINE_SUBST(LIBRARY_CURRENT,  1, [teobase dynamic library version])
+AC_DEFINE_SUBST(LIBRARY_REVISION, 0, [teobase dynamic library version])
+AC_DEFINE_SUBST(LIBRARY_AGE,      0, [teobase dynamic library version])
+
+AC_DEFINE([PACKAGE_DESCRIPTION], ["teobase lib"], [Application description])
+AC_DEFINE([PACKAGE_DEPENDENCIES], ["libteonet-dev"], [Application dependencies])
+
+
+
+AC_PREFIX_DEFAULT([/usr])
+AC_CONFIG_HEADERS([src/config.h])
+#AC_CONFIG_MACRO_DIR([m4])
+
+
+AC_USE_SYSTEM_EXTENSIONS
+
+AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([subdir-objects])
+AM_SILENT_RULES([yes])
+
+AM_PROG_LIBTOOL
+
 
 # Checks for programs.
 AC_PROG_CXX
@@ -38,7 +64,7 @@ AC_TYPE_SIZE_T
 # ***************************************************************************
 # Internatinalization
 # ***************************************************************************
-GETTEXT_PACKAGE=teobase
+GETTEXT_PACKAGE=libteobase
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 AM_GLIB_GNU_GETTEXT
