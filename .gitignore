@@ -26,6 +26,5 @@ config.guess
 /po/stamp-it
 /po/POTFILES
 /src/stamp-h1
-/src/teobase
 /src/config.h
 /src/config.h.in
