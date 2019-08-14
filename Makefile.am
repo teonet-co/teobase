@@ -27,7 +27,7 @@ DX_CLEANFILES = -rf @DX_DOCDIR@/*
 
 endif
 
-SUBDIRS = src po
+SUBDIRS = libs/teoccl src po
 
 teobasedocdir = ${prefix}/doc/@PACKAGE@
 teobasedoc_DATA = \
