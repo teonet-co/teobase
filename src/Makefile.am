@@ -43,9 +43,9 @@ libteobase_la_SOURCES = \
 	teobase/time.c \
 	teobase/logging.c
 
-libteobaseincludedir=$(includedir)/libteobase
+libteobaseincludedir=$(includedir)/teobase
 
-nobase_libteobaseinclude_HEADERS = \
+libteobaseinclude_HEADERS = \
 	../include/teobase/platform.h \
 	../include/teobase/socket.h \
 	../include/teobase/time.h \
