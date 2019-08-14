@@ -27,7 +27,7 @@ AC_DEFINE([PACKAGE_DEPENDENCIES], ["libteonet-dev"], [Application dependencies])
 
 AC_PREFIX_DEFAULT([/usr])
 AC_CONFIG_HEADERS([src/config.h])
-#AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIR([m4])
 
 
 AC_USE_SYSTEM_EXTENSIONS
@@ -116,9 +116,11 @@ AM_PROG_LIBTOOL
 
 # PKG_CHECK_MODULES(TEOBASE, [glib-2.0 ])
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 src/Makefile
 po/Makefile.in
 ])
+
 AC_CONFIG_SUBDIRS([libs/teoccl])
+AC_OUTPUT
