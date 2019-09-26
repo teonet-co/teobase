@@ -1,12 +1,17 @@
 .deps
+.dirstamp
 .libs
+*~
 *.o
+*.lo
+*.la
 Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache
 compile
 config.guess
+m4/
 /intltool-extract.in
 /intltool-update.in
 /depcomp
