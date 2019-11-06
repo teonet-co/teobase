@@ -15,7 +15,7 @@ AC_SUBST([$1], ['$2'])
 
 AC_PREREQ([2.69])
 
-AC_INIT(teobase, 0.1.0, [email@example.com])
+AC_INIT(teobase, 0.1.2, [email@example.com])
 AC_DEFINE_SUBST(LIBRARY_CURRENT,  1, [teobase dynamic library version])
 AC_DEFINE_SUBST(LIBRARY_REVISION, 0, [teobase dynamic library version])
 AC_DEFINE_SUBST(LIBRARY_AGE,      1, [teobase dynamic library version])
