@@ -79,7 +79,7 @@ teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uin
 }
 
 // Establishes a connection to a specified server.
-teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout) {
+teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout_ms) {
     struct sockaddr_in serveraddr;
 
     memset(&serveraddr, 0, sizeof(struct sockaddr_in));
@@ -149,7 +149,7 @@ teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* serv
         }
     }
 
-    int select_result = teosockSelect(socket, TEOSOCK_SELECT_MODE_WRITE | TEOSOCK_SELECT_MODE_ERROR, timeout);
+    int select_result = teosockSelect(socket, TEOSOCK_SELECT_MODE_WRITE | TEOSOCK_SELECT_MODE_ERROR, timeout_ms);
 
     if (select_result == TEOSOCK_SELECT_TIMEOUT || select_result == TEOSOCK_SELECT_ERROR) {
         teosockClose(socket);
@@ -198,15 +198,15 @@ ssize_t teosockSend(teonetSocket socket, const char* data, size_t length) {
 }
 
 // Determines the status of the socket, waiting if necessary, to perform synchronous operation.
-teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout) {
+teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout_ms) {
     fd_set socket_fd_set;
     struct timeval timeval_timeout;
 
     memset(&socket_fd_set, 0, sizeof(socket_fd_set));
     memset(&timeval_timeout, 0, sizeof(timeval_timeout));
 
-    timeval_timeout.tv_sec = timeout / 1000;
-    timeval_timeout.tv_usec = (timeout % 1000) * 1000;
+    timeval_timeout.tv_sec = timeout_ms / 1000;
+    timeval_timeout.tv_usec = (timeout_ms % 1000) * 1000;
 
     // Create a descriptor set with specified socket.
     FD_ZERO(&socket_fd_set);

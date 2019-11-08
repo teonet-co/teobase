@@ -88,7 +88,7 @@ teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uin
  *
  * @note Socket will be left in non-blocking mode.
  */
-teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout);
+teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout_ms);
 
 /**
  * Receives data from a connected socket.
@@ -142,7 +142,7 @@ typedef enum teosockSelectResult {
  * @retval TEOSOCK_SELECT_TIMEOUT if no data was received before reaching timeout.
  * @retval TEOSOCK_SELECT_ERROR if an error occurred.
  */
-teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout);
+teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout_ms);
 
 /**
  * Closes a socket.
