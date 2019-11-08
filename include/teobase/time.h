@@ -9,17 +9,17 @@
 #include <stdint.h>
 
 /**
- * Get current time.
+ * Get current time in milliseconds.
  *
  * @return current time in milliseconds since Unix Epoch.
  *
  * @note On 32-bit linux systems return value is limited to maximum value of 32-bit signed integer.
  */
 
-int64_t teotimeGetCurrentTime();
+int64_t teotimeGetCurrentTimeMs();
 
 /**
- * Get time between saved moment of time and current time.
+ * Get time in milliseconds between saved moment of time and current time.
  *
  * @param time_value Saved moment of time.
  *
@@ -27,6 +27,6 @@ int64_t teotimeGetCurrentTime();
  *
  * @note Return value can be negative if time_value is in the future.
  */
-int64_t teotimeGetTimePassed(int64_t time_value);
+int64_t teotimeGetTimePassedMs(int64_t time_value_ms);
 
 #endif
