@@ -12,6 +12,10 @@
 #include <sys/time.h>
 #endif
 
+const unsigned int MILLISECONDS_IN_SECOND = 1000;
+const unsigned int MICROSECONDS_IN_SECOND = 1000000;
+const unsigned int MICROSECONDS_IN_MILLISECOND = 1000;
+
 // Get current time in microseconds.
 int64_t teotimeGetCurrentTimeUs() {
     int64_t current_time_us;
@@ -22,7 +26,7 @@ int64_t teotimeGetCurrentTimeUs() {
 
     _ftime64_s(&time_value);
 
-    current_time_us = time_value.time * 1000000 + time_value.millitm * 1000;
+    current_time_us = time_value.time * MICROSECONDS_IN_SECOND + time_value.millitm * MICROSECONDS_IN_MILLISECOND;
 #else
     struct timeval time_value;
     memset(&time_value, 0, sizeof(time_value));
@@ -30,7 +34,7 @@ int64_t teotimeGetCurrentTimeUs() {
     gettimeofday(&time_value, 0);
 
     // Cast to int64_t is needed on 32-bit unix systems.
-    current_time_us = (int64_t)time_value.tv_sec * 1000000 + time_value.tv_usec;
+    current_time_us = (int64_t)time_value.tv_sec * MICROSECONDS_IN_SECOND + time_value.tv_usec;
 #endif
 
     return current_time_us;
@@ -46,7 +50,7 @@ int64_t teotimeGetCurrentTimeMs() {
 
     _ftime64_s(&time_value);
 
-    current_time_ms = time_value.time * 1000 + time_value.millitm;
+    current_time_ms = time_value.time * MILLISECONDS_IN_SECOND + time_value.millitm;
 #else
     struct timeval time_value;
     memset(&time_value, 0, sizeof(time_value));
@@ -54,7 +58,7 @@ int64_t teotimeGetCurrentTimeMs() {
     gettimeofday(&time_value, 0);
 
     // Cast to int64_t is needed on 32-bit unix systems.
-    current_time_ms = (int64_t)time_value.tv_sec * 1000 + time_value.tv_usec / 1000;
+    current_time_ms = (int64_t)time_value.tv_sec * MILLISECONDS_IN_SECOND + time_value.tv_usec / MICROSECONDS_IN_MILLISECOND;
 #endif
 
     return current_time_ms;
