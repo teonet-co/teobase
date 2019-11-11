@@ -71,5 +71,4 @@ AC_CONFIG_FILES([
         src/Makefile
 ])
 
-AC_CONFIG_SUBDIRS([libs/teoccl])
 AC_OUTPUT

@@ -13,7 +13,7 @@ DX_CLEANFILES = -rf @DX_DOCDIR@/*
 endif
 
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = libs/teoccl src
+SUBDIRS = src
 
 teobasedocdir = ${prefix}/doc/@PACKAGE@
 teobasedoc_DATA = ChangeLog
