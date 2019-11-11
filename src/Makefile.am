@@ -1,39 +1,14 @@
-## Process this file with automake to produce Makefile.in
-#
-
-ACLOCAL_AMFLAGS = -I m4
-
-AM_CPPFLAGS = \
-	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(TEOBASE_CFLAGS)
-
-AM_CFLAGS = \
-	-g -Wall \
-	-std=gnu11 \
-	-fno-strict-aliasing \
+AM_CFLAGS = -fno-strict-aliasing \
 	-fPIC \
-	-I../include \
 	-Wpointer-arith
 
-AM_CXX = clang++
-AM_CXXFLAGS = \
-	-g -Wall \
-	-std=c++14 \
-	-fPIC \
-	-I../include
-
-
-AM_LDFLAGS = 
-
-LIBS =
-
-lib_LTLIBRARIES = libteobase.la
 
 libteobase_la_SOURCES = \
 	teobase/socket.c \
 	teobase/time.c \
 	teobase/logging.c
+
+lib_LTLIBRARIES = libteobase.la
 
 libteobaseincludedir=$(includedir)/teobase
 
@@ -44,6 +19,6 @@ libteobaseinclude_HEADERS = \
 	../include/teobase/logging.h \
 	../include/teobase/windows.h
 
-libteobase_la_LDFLAGS = $(AM_LDFLAGS) -version-info $(LIBRARY_CURRENT):$(LIBRARY_REVISION):$(LIBRARY_AGE)
+libteobase_la_CFLAGS = -I$(top_srcdir)/include
+libteobase_la_LDFLAGS = -version-info $(LIBRARY_CURRENT):$(LIBRARY_REVISION):$(LIBRARY_AGE)
 
-libteobase_la_LIBADD = $(TEOBASE_LIBS)
