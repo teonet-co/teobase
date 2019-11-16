@@ -8,6 +8,13 @@
 
 #include <stdint.h>
 
+/// Unnamed enumeration with integer constants.
+typedef enum {
+    MILLISECONDS_IN_SECOND = 1000,  ///< Amount of milliseconds in second.
+    MICROSECONDS_IN_SECOND = 1000000,  ///< Amount of microseconds in second.
+    MICROSECONDS_IN_MILLISECOND = 1000,  ///< Amount of microseconds in millisecond.
+} TEOTIME_CONSTANTS;
+
 /**
  * Get current time in microseconds.
  *

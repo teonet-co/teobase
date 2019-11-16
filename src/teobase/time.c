@@ -12,10 +12,6 @@
 #include <sys/time.h>
 #endif
 
-const unsigned int MILLISECONDS_IN_SECOND = 1000;
-const unsigned int MICROSECONDS_IN_SECOND = 1000000;
-const unsigned int MICROSECONDS_IN_MILLISECOND = 1000;
-
 // Get current time in microseconds.
 int64_t teotimeGetCurrentTimeUs() {
     int64_t current_time_us;
