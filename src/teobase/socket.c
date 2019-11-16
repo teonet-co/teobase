@@ -29,6 +29,30 @@
 #include <sys/time.h>  // To be able to use select() function.
 #endif
 
+#include "teobase/time.h"
+
+// Set value of timeval structure to time value specified in milliseconds.
+void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms) {
+    if (time_value_ms != 0) {
+        timeval_ptr->tv_sec = time_value_ms / MILLISECONDS_IN_SECOND;
+        timeval_ptr->tv_usec = (time_value_ms % MILLISECONDS_IN_SECOND) * MICROSECONDS_IN_MILLISECOND;
+    } else {
+        timeval_ptr->tv_sec = 0;
+        timeval_ptr->tv_usec = 0;
+    }
+}
+
+// Set value of timeval structure to time value specified in microseconds.
+void teosockTimevalFromUs(struct timeval* timeval_ptr, int64_t time_value_us) {
+    if (time_value_us != 0) {
+        timeval_ptr->tv_sec = time_value_us / MICROSECONDS_IN_SECOND;
+        timeval_ptr->tv_usec = time_value_us % MICROSECONDS_IN_SECOND;
+    } else {
+        timeval_ptr->tv_sec = 0;
+        timeval_ptr->tv_usec = 0;
+    }
+}
+
 // Creates a TCP socket.
 teonetSocket teosockCreateTcp() {
     return socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -200,13 +224,7 @@ ssize_t teosockSend(teonetSocket socket, const char* data, size_t length) {
 // Determines the status of the socket, waiting if necessary, to perform synchronous operation.
 teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout_ms) {
     fd_set socket_fd_set;
-    struct timeval timeval_timeout;
-
     memset(&socket_fd_set, 0, sizeof(socket_fd_set));
-    memset(&timeval_timeout, 0, sizeof(timeval_timeout));
-
-    timeval_timeout.tv_sec = timeout_ms / 1000;
-    timeval_timeout.tv_usec = (timeout_ms % 1000) * 1000;
 
     // Create a descriptor set with specified socket.
     FD_ZERO(&socket_fd_set);
@@ -215,6 +233,11 @@ teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int time
     fd_set* read_fd_set = (status_mask & TEOSOCK_SELECT_MODE_READ) ? &socket_fd_set : NULL;
     fd_set* write_fd_set = (status_mask & TEOSOCK_SELECT_MODE_WRITE) ? &socket_fd_set : NULL;
     fd_set* error_fd_set = (status_mask & TEOSOCK_SELECT_MODE_ERROR) ? &socket_fd_set : NULL;
+
+    struct timeval timeval_timeout;
+    memset(&timeval_timeout, 0, sizeof(timeval_timeout));
+
+    teosockTimevalFromMs(&timeval_timeout, timeout_ms);
 
 #if defined(TEONET_OS_WINDOWS)
     int result = select(0, read_fd_set, write_fd_set, error_fd_set, &timeval_timeout);

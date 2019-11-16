@@ -23,6 +23,22 @@ typedef intptr_t ssize_t;
 #include <unistd.h>
 #endif
 
+/**
+ * Set value of timeval structure to time value specified in milliseconds.
+ * 
+ * @param timeval_ptr[out] A pointer to timeval structure.
+ * @param time_value_ms[in] Time value in milliseconds.
+ */
+void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms);
+
+/**
+ * Set value of timeval structure to time value specified in microseconds.
+ * 
+ * @param timeval_ptr[out] A pointer to timeval structure.
+ * @param time_value_us[in] Time value in microseconds.
+ */
+void teosockTimevalFromUs(struct timeval* timeval_ptr, int64_t time_value_us);
+
 /// Alias for socket type on current platform. SOCKET on windows, int on linux.
 #if defined(TEONET_OS_WINDOWS)
 typedef SOCKET teonetSocket;
