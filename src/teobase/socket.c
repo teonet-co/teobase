@@ -22,11 +22,8 @@
 #include <sys/types.h>  // To be compatible with historical (BSD) implementations.
 #include <sys/select.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <unistd.h>
-#endif
-
-#if defined(TEONET_OS_IOS)
-#include <sys/time.h>  // To be able to use select() function.
 #endif
 
 #include "teobase/time.h"

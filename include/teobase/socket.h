@@ -14,6 +14,8 @@
 #include "teobase/windows.h"
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <winsock2.h>
+#else
+#include <sys/time.h>
 #endif
 
 #if defined(TEONET_OS_WINDOWS)
