@@ -23,7 +23,7 @@ typedef enum {
  * @note On 32-bit linux systems return value is limited to maximum value of 32-bit signed integer.
  */
 
-int64_t teotimeGetCurrentTimeUs();
+int64_t teotimeGetCurrentTimeUs(void);
 
 /**
  * Get current time in milliseconds.
@@ -33,7 +33,7 @@ int64_t teotimeGetCurrentTimeUs();
  * @note On 32-bit linux systems return value is limited to maximum value of 32-bit signed integer.
  */
 
-int64_t teotimeGetCurrentTimeMs();
+int64_t teotimeGetCurrentTimeMs(void);
 
 /**
  * Get time in microseconds between saved moment of time and current time.

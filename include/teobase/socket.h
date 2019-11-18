@@ -66,7 +66,7 @@ typedef enum {
  *
  * @returns TEOSOCK_INVALID_SOCKET on error, socket handle otherwise.
  */
-teonetSocket teosockCreateTcp();
+teonetSocket teosockCreateTcp(void);
 
 /// Result enumeration for teosockConnect() function.
 typedef enum teosockConnectResult {
@@ -248,7 +248,7 @@ int teosockSetTcpNodelay(teonetSocket socket);
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-int teosockInit();
+int teosockInit(void);
 
 /**
  * Cleanup socket library.
@@ -262,5 +262,5 @@ int teosockInit();
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-int teosockCleanup();
+int teosockCleanup(void);
 #endif
