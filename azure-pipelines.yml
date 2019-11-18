@@ -60,3 +60,14 @@ jobs:
       workingDirectory: 'gradle'
       gradleWrapperFile: 'gradle/gradlew'
       tasks: 'assembleRelease'
+- job: build_macos
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - task: Xcode@5
+    inputs:
+      actions: 'build' 
+      configuration: 'Release'
+      sdk: 'macosx'
+      xcWorkspacePath: 'xcode/teobase-macos-bundle.xcodeproj/project.xcworkspace'
+      scheme: 'teobase'
