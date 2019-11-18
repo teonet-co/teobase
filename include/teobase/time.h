@@ -38,7 +38,7 @@ int64_t teotimeGetCurrentTimeMs();
 /**
  * Get time in microseconds between saved moment of time and current time.
  *
- * @param time_value Saved moment of time in microseconds.
+ * @param time_value_us Saved moment of time in microseconds.
  *
  * @return Time in microseconds between time_value and current time.
  *
@@ -50,7 +50,7 @@ int64_t teotimeGetTimePassedUs(int64_t time_value_us);
 /**
  * Get time in milliseconds between saved moment of time and current time.
  *
- * @param time_value Saved moment of time in milliseconds.
+ * @param time_value_ms Saved moment of time in milliseconds.
  *
  * @return Time in milliseconds between time_value and current time.
  *

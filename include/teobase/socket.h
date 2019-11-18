@@ -28,16 +28,16 @@ typedef intptr_t ssize_t;
 /**
  * Set value of timeval structure to time value specified in milliseconds.
  * 
- * @param timeval_ptr[out] A pointer to timeval structure.
- * @param time_value_ms[in] Time value in milliseconds.
+ * @param timeval_ptr [out] A pointer to timeval structure.
+ * @param time_value_ms [in] Time value in milliseconds.
  */
 void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms);
 
 /**
  * Set value of timeval structure to time value specified in microseconds.
  * 
- * @param timeval_ptr[out] A pointer to timeval structure.
- * @param time_value_us[in] Time value in microseconds.
+ * @param timeval_ptr [out] A pointer to timeval structure.
+ * @param time_value_us [in] Time value in microseconds.
  */
 void teosockTimevalFromUs(struct timeval* timeval_ptr, int64_t time_value_us);
 
@@ -96,7 +96,7 @@ teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uin
  * @param socket Socket descriptor obtained using teosockCreateTcp() function.
  * @param server Server IP address or domain name.
  * @param port Port to connect to.
- * @param timeout Maximum amount of time to wait before returning error, in milliseconds.
+ * @param timeout_ms Maximum amount of time to wait before returning error, in milliseconds.
  *
  * @returns Result of operation.
  *
@@ -152,7 +152,7 @@ typedef enum teosockSelectResult {
  *
  * @param socket Socket descriptor obtained using teosockCreateTcp() function.
  * @param status_mask A combination of teosockSelectMode flags defining modes to check.
- * @param timeout The amount of time to wait before returning timeout, in milliseconds.
+ * @param timeout_ms The amount of time to wait before returning timeout, in milliseconds.
  *
  * @returns Result of operation.
  *
