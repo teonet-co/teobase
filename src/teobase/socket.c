@@ -31,7 +31,9 @@
 // Set value of timeval structure to time value specified in milliseconds.
 void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms) {
     if (time_value_ms != 0) {
-        timeval_ptr->tv_sec = time_value_ms / MILLISECONDS_IN_SECOND;
+        // Note: On Windows tv_sec is defined as long. Explicit cast to long is needed to avoid warning.
+        // On LP64 (i.e. 4/8/8) systems tv_sec is defined as time_t and size of long type match size of time_t.
+        timeval_ptr->tv_sec = (long)(time_value_ms / MILLISECONDS_IN_SECOND);
         timeval_ptr->tv_usec = (time_value_ms % MILLISECONDS_IN_SECOND) * MICROSECONDS_IN_MILLISECOND;
     } else {
         timeval_ptr->tv_sec = 0;
@@ -42,7 +44,9 @@ void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms) {
 // Set value of timeval structure to time value specified in microseconds.
 void teosockTimevalFromUs(struct timeval* timeval_ptr, int64_t time_value_us) {
     if (time_value_us != 0) {
-        timeval_ptr->tv_sec = time_value_us / MICROSECONDS_IN_SECOND;
+        // Note: On Windows tv_sec is defined as long. Explicit cast to long is needed to avoid warning.
+        // On LP64 (i.e. 4/8/8) systems tv_sec is defined as time_t and size of long type match size of time_t.
+        timeval_ptr->tv_sec = (long)(time_value_us / MICROSECONDS_IN_SECOND);
         timeval_ptr->tv_usec = time_value_us % MICROSECONDS_IN_SECOND;
     } else {
         timeval_ptr->tv_sec = 0;
