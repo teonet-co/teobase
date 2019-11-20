@@ -1,0 +1,13 @@
+trigger:
+- master
+
+jobs:
+- job: build_linux
+  pool:
+    vmImage: 'ubuntu-18.04'
+    # vmImage: 'ubuntu-16.04'
+  # container: 'buildpack-deps:bionic'
+  steps:
+  - bash: 'autoreconf --install'
+  - bash: './configure CPPFLAGS=-DNDEBUG'
+  - bash: 'make'
