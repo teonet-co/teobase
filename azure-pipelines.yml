@@ -11,3 +11,43 @@ jobs:
   - bash: 'autoreconf --install'
   - bash: './configure CPPFLAGS=-DNDEBUG'
   - bash: 'make'
+- job: build_windows_x86_static
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln' 
+      platform: x86
+      configuration: Release
+      msbuildArguments: -target:teobase-static
+- job: build_windows_x86_64_static
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln' 
+      platform: x64
+      configuration: Release
+      msbuildArguments: -target:teobase-static
+- job: build_windows_x86_dynamic
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln' 
+      platform: x86
+      configuration: Release
+      msbuildArguments: -target:teobase-dynamic
+- job: build_windows_x86_64_dynamic
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln' 
+      platform: x64
+      configuration: Release
+      msbuildArguments: -target:teobase-dynamic
