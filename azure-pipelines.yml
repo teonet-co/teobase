@@ -51,3 +51,12 @@ jobs:
       platform: x64
       configuration: Release
       msbuildArguments: -target:teobase-dynamic
+- job: build_android
+  pool:
+    vmImage: 'ubuntu-18.04'
+  steps:
+  - task: Gradle@2
+    inputs:
+      workingDirectory: 'gradle'
+      gradleWrapperFile: 'gradle/gradlew'
+      tasks: 'assembleRelease'
