@@ -71,3 +71,14 @@ jobs:
       sdk: 'macosx'
       xcWorkspacePath: 'xcode/teobase-macos-bundle.xcodeproj/project.xcworkspace'
       scheme: 'teobase'
+- job: build_ios
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - task: Xcode@5
+    inputs:
+      actions: 'build' 
+      configuration: 'Release'
+      sdk: 'iphoneos'
+      xcWorkspacePath: 'xcode/teobase-ios.xcodeproj/project.xcworkspace'
+      scheme: 'teobase'
