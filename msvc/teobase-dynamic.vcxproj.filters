@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{739c63bb-0042-470b-9715-12b7b3c33d2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{b40d35d7-c386-4c62-9c06-7d97dd254e59}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\teobase\api.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\teobase\logging.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\teobase\mutex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\teobase\platform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\teobase\socket.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\teobase\time.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\teobase\windows.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\teobase\logging.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\teobase\mutex.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\teobase\socket.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\teobase\time.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
