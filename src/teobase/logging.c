@@ -18,6 +18,7 @@ static inline const char *log_suffix(TeoLogMessageType value) {
     case TEOLOG_SEVERITY_IMPORTANT: return ":IMP";
     case TEOLOG_SEVERITY_INFO: return ":INF";
     case TEOLOG_SEVERITY_DEBUG: return ":DBG";
+    default: break;
     }
     return "";
 }
@@ -29,6 +30,7 @@ static inline android_LogPriority log_prio(TeoLogMessageType value) {
     case TEOLOG_SEVERITY_IMPORTANT: return ANDROID_LOG_WARN;
     case TEOLOG_SEVERITY_INFO: return ANDROID_LOG_INFO;
     case TEOLOG_SEVERITY_DEBUG: return ANDROID_LOG_DEBUG;
+    default: break;
     }
     return ANDROID_LOG_VERBOSE;
 }
