@@ -65,4 +65,41 @@ void log_error(const char* tag, const char* message);
 void log_format(const char *file, int line, const char *func,
                 TeoLogMessageType type, const char *tag, const char *fmt, ...);
 
+/**
+ * Line track - log message along with file/line/function name
+ * use it like
+ * LTRACK_E("subSysTag", "Received nullptr from %s:%d\n\t\tAborting",
+ *          peername, (int)port);
+*/
+#define LTRACK(tag, ...)                                                       \
+  log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__, TEOLOG_SEVERITY_DEBUG,   \
+             tag, __VA_ARGS__)
+
+#define LTRACK_E(tag, ...)                                                     \
+  log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__, TEOLOG_SEVERITY_ERROR,   \
+             tag, __VA_ARGS__)
+
+#define LTRACK_I(tag, ...)                                                     \
+  log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__, TEOLOG_SEVERITY_INFO,    \
+             tag, __VA_ARGS__)
+
+/**
+ * Conditional line track
+ * if @a COND is truthy value then does same as LTRACK, otherwise - noop
+*/
+#define CLTRACK(COND, tag, ...)                                                \
+  ((COND) ? log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__,                \
+                       TEOLOG_SEVERITY_DEBUG, tag, __VA_ARGS__)                \
+          : (void)0)
+
+#define CLTRACK_E(COND, tag, ...)                                              \
+  ((COND) ? log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__,                \
+                       TEOLOG_SEVERITY_ERROR, tag, __VA_ARGS__)                \
+          : (void)0)
+
+#define CLTRACK_I(COND, tag, ...)                                              \
+  ((COND) ? log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__,                \
+                       TEOLOG_SEVERITY_INFO, tag, __VA_ARGS__)                 \
+          : (void)0)
+
 #endif
