@@ -58,7 +58,7 @@ void teolog_output_compact(const char *file, int line, const char *func,
 
 void log_debug(const char* tag, const char* message);
 void log_info(const char* tag, const char* message);
-void log_warning(const char* tag, const char* message); //< log_important alias
+void log_warning(const char* tag, const char* message); // Alias for log_important
 void log_important(const char* tag, const char* message);
 void log_error(const char* tag, const char* message);
 
