@@ -6,8 +6,6 @@
 #ifndef TEOBASE_LOGGING_H
 #define TEOBASE_LOGGING_H
 
-#include "teobase/platform.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
