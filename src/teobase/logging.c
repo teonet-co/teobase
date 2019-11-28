@@ -51,22 +51,12 @@ void teolog_output_compact(const char * file, int line, const char * func,
     if (message == NULL) { message = "<NULL>"; }
     if (tag == NULL) { tag = ""; }
 
-    #if defined(TEONET_OS_ANDROID)
+#if defined(TEONET_OS_ANDROID)
     __android_log_print(log_prio(type), tag, "%s", message);
-    #elif defined(TEONET_OS_WINDOWS)
-    const char *suffix = log_suffix(type);
-    // Estimate buffer size
-    int len = snprintf(NULL, 0, "[%s%s] %s", tag, suffix, message);
-    if (len < 1) { return; }
-    char *buffer = malloc(len+1);
-    if (buffer == NULL) { return; }
-    snprintf(buffer, len+1, "[%s%s] %s", tag, suffix, message);
-    OutputDebugStringA(buffer);
-    free(buffer);
-    #else
+#else
     const char *suffix = log_suffix(type);
     printf("[%s%s] %s\n", tag, suffix, message);
-    #endif
+#endif
 }
 
 void teolog_output_default(const char *file, int line, const char *func,
@@ -80,28 +70,16 @@ void teolog_output_default(const char *file, int line, const char *func,
     if (file == NULL) { file = "??"; }
     if (func == NULL) { func = "??"; }
 
-   #if defined(TEONET_OS_ANDROID)
-    __android_log_print(log_prio(type), tag, "%s:%d ‘%s‘>> %s", file, (int)line,
+#if defined(TEONET_OS_ANDROID)
+    __android_log_print(log_prio(type), tag, "%s:%d '%s'>> %s", file, (int)line,
                         func, message);
-    #elif defined(TEONET_OS_WINDOWS)
-    const char *suffix = log_suffix(type);
-    // Estimate buffer size
-    size_t len = snprintf(NULL, 0, "%s:%d ‘%s‘>> [%s%s] %s", file, (int)line,
-                          func, tag, suffix, message);
-    if (len < 1) { return; }
-    char *buffer = malloc(len+1);
-    if (buffer == NULL) { return; }
-    snprintf(buffer, len+1, "%s:%d ‘%s‘>> [%s%s] %s", file, (int)line,
-             func, tag, suffix, message);
-    OutputDebugStringA(buffer);
-    free(buffer);
 #else
     const char *suffix = log_suffix(type);
-    printf("%s:%d ‘%s‘>> [%s%s] %s\n", file, (int)line, func, tag, suffix, message);
+    printf("%s:%d '%s'>> [%s%s] %s\n", file, (int)line, func, tag, suffix, message);
 #endif
 }
 
-static teologOutputFunction_t log_message = teolog_output_default;
+static teologOutputFunction_t log_message = teolog_output_compact;
 
 void set_log_output_function(teologOutputFunction_t logger) {
     log_message = logger;
@@ -117,12 +95,13 @@ void log_format(const char *file, int line, const char *func,
     va_end(args_noop);
 
     if (message_len < 1) { return; }
-    char *message = malloc(message_len+1);
+    size_t buffer_length = (size_t)message_len + 1;
+    char *message = (char *)malloc(buffer_length);
     if (message == NULL) { return; }
 
     va_list args_fmt;
     va_start(args_fmt, fmt);
-    vsnprintf(message, message_len+1, fmt, args_fmt);
+    vsnprintf(message, buffer_length, fmt, args_fmt);
     va_end(args_fmt);
 
     log_message(file, line, func, type, tag, message);

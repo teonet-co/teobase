@@ -6,6 +6,12 @@
 #ifndef TEOBASE_LOGGING_H
 #define TEOBASE_LOGGING_H
 
+#include "teobase/platform.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Message importance/verbocity type. Passed unmodified to output function.
  * Default loggers always output all messages of types (ERROR, IMPORTANT, INFO)
@@ -72,15 +78,15 @@ void log_format(const char *file, int line, const char *func,
  *          peername, (int)port);
 */
 #define LTRACK(tag, ...)                                                       \
-  log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__, TEOLOG_SEVERITY_DEBUG,   \
+  log_format(__FILE__, __LINE__, __FUNCTION__, TEOLOG_SEVERITY_DEBUG,          \
              tag, __VA_ARGS__)
 
 #define LTRACK_E(tag, ...)                                                     \
-  log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__, TEOLOG_SEVERITY_ERROR,   \
+  log_format(__FILE__, __LINE__, __FUNCTION__, TEOLOG_SEVERITY_ERROR,          \
              tag, __VA_ARGS__)
 
 #define LTRACK_I(tag, ...)                                                     \
-  log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__, TEOLOG_SEVERITY_INFO,    \
+  log_format(__FILE__, __LINE__, __FUNCTION__, TEOLOG_SEVERITY_INFO,           \
              tag, __VA_ARGS__)
 
 /**
@@ -88,18 +94,22 @@ void log_format(const char *file, int line, const char *func,
  * if @a COND is truthy value then does same as LTRACK, otherwise - noop
 */
 #define CLTRACK(COND, tag, ...)                                                \
-  ((COND) ? log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__,                \
+  ((COND) ? log_format(__FILE__, __LINE__, __FUNCTION__,                       \
                        TEOLOG_SEVERITY_DEBUG, tag, __VA_ARGS__)                \
           : (void)0)
 
 #define CLTRACK_E(COND, tag, ...)                                              \
-  ((COND) ? log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__,                \
+  ((COND) ? log_format(__FILE__, __LINE__, __FUNCTION__,                       \
                        TEOLOG_SEVERITY_ERROR, tag, __VA_ARGS__)                \
           : (void)0)
 
 #define CLTRACK_I(COND, tag, ...)                                              \
-  ((COND) ? log_format(__FILE__, __LINE__, __PRETTY_FUNCTION__,                \
+  ((COND) ? log_format(__FILE__, __LINE__, __FUNCTION__,                       \
                        TEOLOG_SEVERITY_INFO, tag, __VA_ARGS__)                 \
           : (void)0)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
