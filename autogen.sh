@@ -18,10 +18,9 @@
   exit 1
 }
 
-echo Running autoreconf --verbose --install --force
+echo "\n" Running autoreconf --verbose --install --force "\n"
 autoreconf --verbose --install --force
 
-echo Removing autom4te.cache
+echo "\n" Removing autom4te.cache "\n"
 rm -rf autom4te.cache
-
 
