@@ -8,8 +8,8 @@
 #include "teobase/windows.h"
 #endif
 
-#include <stdio.h>  // snprintf, vsnprintf, NULL, size_t
 #include <stdarg.h> // va_start, va_end, va_copy
+#include <stdio.h>  // snprintf, vsnprintf, NULL, size_t
 #include <stdlib.h> // malloc, free
 
 static inline const char *log_suffix(TeoLogMessageType value) {
@@ -42,9 +42,9 @@ static const TeoLogMessageType outputLevel = TEOLOG_SEVERITY_DEBUG;
 static const TeoLogMessageType outputLevel = TEOLOG_SEVERITY_INFO;
 #endif
 
-void teolog_output_compact(const char * file, int line, const char * func,
-                         TeoLogMessageType type, const char *tag,
-                         const char *message) {
+void teolog_output_compact(const char *file, int line, const char *func,
+                           TeoLogMessageType type, const char *tag,
+                           const char *message) {
     if (type > outputLevel) {
         return; //  verbosity limit
     }
@@ -60,8 +60,8 @@ void teolog_output_compact(const char * file, int line, const char * func,
 }
 
 void teolog_output_default(const char *file, int line, const char *func,
-                         TeoLogMessageType type, const char *tag,
-                         const char *message) {
+                           TeoLogMessageType type, const char *tag,
+                           const char *message) {
     if (type > outputLevel) {
         return; //  verbosity limit
     }
@@ -75,7 +75,8 @@ void teolog_output_default(const char *file, int line, const char *func,
                         func, message);
 #else
     const char *suffix = log_suffix(type);
-    printf("%s:%d '%s'>> [%s%s] %s\n", file, (int)line, func, tag, suffix, message);
+    printf("%s:%d '%s'>> [%s%s] %s\n", file, (int)line, func, tag, suffix,
+           message);
 #endif
 }
 
@@ -85,8 +86,22 @@ void set_log_output_function(teologOutputFunction_t logger) {
     log_message = logger;
 }
 
+static inline void invoke_log_callback(const char *file, int line,
+                                       const char *func, TeoLogMessageType type,
+                                       const char *tag, const char *message) {
+    // Callback variable can be changed in another thread. Local copy
+    // guarantees that it was not changed between null check and invocation.
+    teologOutputFunction_t log_message_copy = log_message;
+
+    if (log_message_copy != NULL) {
+        log_message_copy(file, line, func, type, tag, message);
+    }
+}
+
 void log_format(const char *file, int line, const char *func,
                 TeoLogMessageType type, const char *tag, const char *fmt, ...) {
+    // log_message callback will be checked for NULL in invoke_log_callback.
+    // This additional check allow skip unnecessary string formatting.
     if (log_message == NULL) { return; }
 
     va_list args_noop;
@@ -104,47 +119,28 @@ void log_format(const char *file, int line, const char *func,
     vsnprintf(message, buffer_length, fmt, args_fmt);
     va_end(args_fmt);
 
-    log_message(file, line, func, type, tag, message);
+    invoke_log_callback(file, line, func, type, tag, message);
     free(message);
 }
 
 void log_debug(const char *tag, const char *message) {
-    if (log_message == NULL) {
-        return;
-    }
-
-    log_message(NULL, -1, NULL, TEOLOG_SEVERITY_DEBUG, tag, message);
+    invoke_log_callback(NULL, -1, NULL, TEOLOG_SEVERITY_DEBUG, tag, message);
 }
 
-void log_info(const char* tag, const char* message) {
-    if (log_message == NULL) {
-        return;
-    }
-
-    log_message(NULL, -1, NULL, TEOLOG_SEVERITY_INFO, tag, message);
+void log_info(const char *tag, const char *message) {
+    invoke_log_callback(NULL, -1, NULL, TEOLOG_SEVERITY_INFO, tag, message);
 }
 
-void log_warning(const char* tag, const char* message) {
-    if (log_message == NULL) {
-        return;
-    }
-
-    log_message(NULL, -1, NULL, TEOLOG_SEVERITY_IMPORTANT, tag, message);
+void log_warning(const char *tag, const char *message) {
+    invoke_log_callback(NULL, -1, NULL, TEOLOG_SEVERITY_IMPORTANT, tag,
+                        message);
 }
 
-void log_important(const char* tag, const char* message){
-    if (log_message == NULL) {
-        return;
-    }
-
-    log_message(NULL, -1, NULL, TEOLOG_SEVERITY_IMPORTANT, tag, message);
+void log_important(const char *tag, const char *message) {
+    invoke_log_callback(NULL, -1, NULL, TEOLOG_SEVERITY_IMPORTANT, tag,
+                        message);
 }
 
-void log_error(const char* tag, const char* message) {
-    if (log_message == NULL) {
-        return;
-    }
-
-    log_message(NULL, -1, NULL, TEOLOG_SEVERITY_ERROR, tag, message);
+void log_error(const char *tag, const char *message) {
+    invoke_log_callback(NULL, -1, NULL, TEOLOG_SEVERITY_ERROR, tag, message);
 }
-
