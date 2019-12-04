@@ -22,7 +22,7 @@ int64_t teotimeGetCurrentTimeUs() {
 
     _ftime64_s(&time_value);
 
-    current_time_us = time_value.time * MICROSECONDS_IN_SECOND + time_value.millitm * MICROSECONDS_IN_MILLISECOND;
+    current_time_us = time_value.time * MICROSECONDS_IN_SECOND + (int64_t)time_value.millitm * MICROSECONDS_IN_MILLISECOND;
 #else
     struct timeval time_value;
     memset(&time_value, 0, sizeof(time_value));
