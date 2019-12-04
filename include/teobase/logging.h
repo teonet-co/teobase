@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 /**
- * Message importance/verbocity type. Passed unmodified to output function.
+ * Message importance/verbosity type. Passed unmodified to output function.
  * Default loggers always output all messages of types (ERROR, IMPORTANT, INFO)
  * Debug builds additionally allows DEBUG messages.
  * All types CUSTOM and above are skipped by default
