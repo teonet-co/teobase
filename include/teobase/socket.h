@@ -27,6 +27,8 @@ typedef intptr_t ssize_t;
 #include <unistd.h>
 #endif
 
+#include "teobase/api.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -37,7 +39,7 @@ extern "C" {
  * @param timeval_ptr [out] A pointer to timeval structure.
  * @param time_value_ms [in] Time value in milliseconds.
  */
-void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms);
+TEOBASE_API void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms);
 
 /**
  * Set value of timeval structure to time value specified in microseconds.
@@ -45,7 +47,7 @@ void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms);
  * @param timeval_ptr [out] A pointer to timeval structure.
  * @param time_value_us [in] Time value in microseconds.
  */
-void teosockTimevalFromUs(struct timeval* timeval_ptr, int64_t time_value_us);
+TEOBASE_API void teosockTimevalFromUs(struct timeval* timeval_ptr, int64_t time_value_us);
 
 /// Alias for socket type on current platform. SOCKET on windows, int on Linux.
 #if defined(TEONET_OS_WINDOWS)
@@ -72,7 +74,7 @@ typedef enum {
  *
  * @returns TEOSOCK_INVALID_SOCKET on error, socket handle otherwise.
  */
-teonetSocket teosockCreateTcp(void);
+TEOBASE_API teonetSocket teosockCreateTcp(void);
 
 /// Result enumeration for teosockConnect() function.
 typedef enum teosockConnectResult {
@@ -94,7 +96,7 @@ typedef enum teosockConnectResult {
  * @retval TEOSOCK_CONNECT_HOST_NOT_FOUND if failed to resolve host address.
  * @retval TEOSOCK_CONNECT_FAILED if failed to connect to server.
  */
-teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uint16_t port);
+TEOBASE_API teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uint16_t port);
 
 /**
  * Establishes a connection to a specified server.
@@ -112,7 +114,7 @@ teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uin
  *
  * @note Socket will be left in non-blocking mode.
  */
-teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout_ms);
+TEOBASE_API teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout_ms);
 
 /**
  * Receives data from a connected socket.
@@ -123,7 +125,7 @@ teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* serv
  *
  * @returns TEOSOCK_SOCKET_ERROR on error, amount of received bytes otherwise.
  */
-ssize_t teosockRecv(teonetSocket socket, char* data, size_t length);
+TEOBASE_API ssize_t teosockRecv(teonetSocket socket, char* data, size_t length);
 
 /**
  * Sends data on a connected socket.
@@ -137,7 +139,7 @@ ssize_t teosockRecv(teonetSocket socket, char* data, size_t length);
  * @note Amount of bytes sent can be less than the number requested to be sent
  * in the @p length parameter.
  */
-ssize_t teosockSend(teonetSocket socket, const char* data, size_t length);
+TEOBASE_API ssize_t teosockSend(teonetSocket socket, const char* data, size_t length);
 
 /// Enumeration with bit flags for status masks for teosockSelect function.
 typedef enum teosockSelectMode {
@@ -166,7 +168,7 @@ typedef enum teosockSelectResult {
  * @retval TEOSOCK_SELECT_TIMEOUT if no data was received before reaching timeout.
  * @retval TEOSOCK_SELECT_ERROR if an error occurred.
  */
-teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout_ms);
+TEOBASE_API teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout_ms);
 
 /**
  * Closes a socket.
@@ -178,7 +180,7 @@ teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int time
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-int teosockClose(teonetSocket socket);
+TEOBASE_API int teosockClose(teonetSocket socket);
 
 /// Enumeration for specifying socket shutdown mode in teosockShutdown() function.
 typedef enum teosockShutdownMode {
@@ -202,7 +204,7 @@ typedef enum teosockShutdownMode {
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-int teosockShutdown(teonetSocket socket, teosockShutdownMode mode);
+TEOBASE_API int teosockShutdown(teonetSocket socket, teosockShutdownMode mode);
 
 /// Enumeration for specifying socket blocking mode in teosockShutdown() function.
 typedef enum teosockBlockingMode {
@@ -223,7 +225,7 @@ typedef enum teosockBlockingMode {
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode blocking_mode);
+TEOBASE_API int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode blocking_mode);
 
 /**
  * Set TCP_NODELAY option on a socket.
@@ -240,7 +242,7 @@ int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode blocking_mod
  * and desired because setting TCP_NODELAY can have a significant negative impact
  * on network and application performance.
  */
-int teosockSetTcpNodelay(teonetSocket socket);
+TEOBASE_API int teosockSetTcpNodelay(teonetSocket socket);
 
 /**
  * Initialize socket library.
@@ -254,7 +256,7 @@ int teosockSetTcpNodelay(teonetSocket socket);
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-int teosockInit(void);
+TEOBASE_API int teosockInit(void);
 
 /**
  * Cleanup socket library.
@@ -268,7 +270,7 @@ int teosockInit(void);
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-int teosockCleanup(void);
+TEOBASE_API int teosockCleanup(void);
 
 #ifdef __cplusplus
 }
