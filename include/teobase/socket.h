@@ -3,6 +3,8 @@
  * @brief Cross platform wrappers for socket specific routines.
  */
 
+#pragma once
+
 #ifndef TEOBASE_SOCKET_H
 #define TEOBASE_SOCKET_H
 

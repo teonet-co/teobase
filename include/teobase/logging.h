@@ -3,6 +3,8 @@
  * @brief Logging functions for user interaction and debugging.
  */
 
+#pragma once
+
 #ifndef TEOBASE_LOGGING_H
 #define TEOBASE_LOGGING_H
 

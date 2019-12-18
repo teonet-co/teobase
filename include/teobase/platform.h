@@ -3,6 +3,8 @@
  * @brief Defines for platform dependent and compiler dependent code.
  */
 
+#pragma once
+
 #ifndef TEOBASE_PLATFORM_H
 #define TEOBASE_PLATFORM_H
 
