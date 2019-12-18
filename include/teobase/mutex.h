@@ -34,7 +34,7 @@ typedef struct teonetMutex {
 } teonetMutex;
 
 /**
- * Initialize mutex object.
+ * Initialize recursive lockable mutex object.
  *
  * @param mutex Pointer to uninitialized @a teonetMutex structure.
  */
@@ -42,8 +42,6 @@ TEOBASE_API void teomutexInitialize(teonetMutex* mutex);
 
 /**
  * Locks mutex object. Blocks calling thread if mutex object is currently locked.
- *
- * @note Attempt to gain recursive lock will cause a deadlock.
  *
  * @param mutex Pointer to @a teonetMutex structure initialized using @a teomutexInitialize.
  */

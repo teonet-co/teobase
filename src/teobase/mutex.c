@@ -14,12 +14,25 @@
 
 #include "teobase/logging.h"
 
+#if !defined(TEONET_OS_WINDOWS)
+static pthread_once_t mutex_attributes_once = PTHREAD_ONCE_INIT;
+
+static pthread_mutexattr_t mutex_attributes;
+
+static void teomutexInitializeAttributes() {
+    pthread_mutexattr_init(&mutex_attributes);
+    pthread_mutexattr_settype(&mutex_attributes, PTHREAD_MUTEX_RECURSIVE);
+}
+#endif
+
 // Initialize mutex object.
 void teomutexInitialize(teonetMutex* mutex) {
 #if defined(TEONET_OS_WINDOWS)
     InitializeCriticalSection(&mutex->critical_section);
 #else
-    int init_result = pthread_mutex_init(&mutex->mutex, NULL);
+    pthread_once(&mutex_attributes_once, teomutexInitializeAttributes);
+
+    int init_result = pthread_mutex_init(&mutex->mutex, &mutex_attributes);
 
     if (init_result != 0) {
         LTRACK_E("TeoBase", "Failed to initialize mutex. Error code: %d.", init_result);
