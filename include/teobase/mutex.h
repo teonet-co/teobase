@@ -36,7 +36,7 @@ typedef struct teonetMutex {
 /**
  * Initialize mutex object.
  *
- * @param mutex Pointer to uninitialized @teonetMutex structure.
+ * @param mutex Pointer to uninitialized @a teonetMutex structure.
  */
 TEOBASE_API void teomutexInitialize(teonetMutex* mutex);
 
@@ -45,30 +45,30 @@ TEOBASE_API void teomutexInitialize(teonetMutex* mutex);
  *
  * @note Attempt to gain recursive lock will cause a deadlock.
  *
- * @param mutex Pointer to @teonetMutex structure initialized using @teomutexInitialize.
+ * @param mutex Pointer to @a teonetMutex structure initialized using @a teomutexInitialize.
  */
 TEOBASE_API void teomutexLock(teonetMutex* mutex);
 
 /**
  * Tries to lock mutex object. If mutex object is currently locked, returns immediately.
  *
- * @param mutex Pointer to @teonetMutex structure initialized using @teomutexInitialize.
+ * @param mutex Pointer to @a teonetMutex structure initialized using @a teomutexInitialize.
  *
  * @return true if mutex was locked, false otherwise.
  */
 TEOBASE_API bool teomutexTryLock(teonetMutex* mutex);
 
 /**
- * Unlocks mutex object locked using @teomutexLock.
+ * Unlocks mutex object locked using @a teomutexLock.
  *
- * @param mutex Pointer to @teonetMutex structure initialized using @teomutexInitialize.
+ * @param mutex Pointer to @a teonetMutex structure initialized using @a teomutexInitialize.
  */
 TEOBASE_API void teomutexUnlock(teonetMutex* mutex);
 
 /**
- * Destroys mutex object created using @teomutexInitialize.
+ * Destroys mutex object created using @a teomutexInitialize.
  *
- * @param mutex Pointer to @teonetMutex structure.
+ * @param mutex Pointer to @a teonetMutex structure.
  */
 TEOBASE_API void teomutexDestroy(teonetMutex* mutex);
 
