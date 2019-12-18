@@ -27,6 +27,10 @@ typedef intptr_t ssize_t;
 #include <unistd.h>
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Set value of timeval structure to time value specified in milliseconds.
  *
@@ -265,4 +269,9 @@ int teosockInit(void);
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
 int teosockCleanup(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

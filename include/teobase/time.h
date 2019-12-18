@@ -10,6 +10,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// Unnamed enumeration with integer constants.
 enum {
     MILLISECONDS_IN_SECOND = 1000,  ///< Amount of milliseconds in second.
@@ -59,5 +63,9 @@ int64_t teotimeGetTimePassedUs(int64_t time_value_us);
  * @note Return value can be negative if time_value is in the future.
  */
 int64_t teotimeGetTimePassedMs(int64_t time_value_ms);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
