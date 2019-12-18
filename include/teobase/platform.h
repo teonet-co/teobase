@@ -45,7 +45,7 @@
 #error Unsupported compiler.
 #endif
 
-// This section is for doxygen. Keep it in sync with macroses above.
+// This section is for Doxygen. Keep it in sync with macroses above.
 #if defined(FORCE_DOXYGEN)
 // Defined if target OS is Android.
 #define TEONET_OS_ANDROID

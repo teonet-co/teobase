@@ -27,7 +27,7 @@ typedef intptr_t ssize_t;
 
 /**
  * Set value of timeval structure to time value specified in milliseconds.
- * 
+ *
  * @param timeval_ptr [out] A pointer to timeval structure.
  * @param time_value_ms [in] Time value in milliseconds.
  */
@@ -35,13 +35,13 @@ void teosockTimevalFromMs(struct timeval* timeval_ptr, int64_t time_value_ms);
 
 /**
  * Set value of timeval structure to time value specified in microseconds.
- * 
+ *
  * @param timeval_ptr [out] A pointer to timeval structure.
  * @param time_value_us [in] Time value in microseconds.
  */
 void teosockTimevalFromUs(struct timeval* timeval_ptr, int64_t time_value_us);
 
-/// Alias for socket type on current platform. SOCKET on windows, int on linux.
+/// Alias for socket type on current platform. SOCKET on windows, int on Linux.
 #if defined(TEONET_OS_WINDOWS)
 typedef SOCKET teonetSocket;
 #else
@@ -241,7 +241,7 @@ int teosockSetTcpNodelay(teonetSocket socket);
  *
  * Call this function before any other socket function.
  * On Windows this function initiates use of the Winsock 2 library.
- * This function does nothing on linux.
+ * This function does nothing on Linux.
  *
  * @returns Result of operation.
  *
@@ -255,7 +255,7 @@ int teosockInit(void);
  *
  * Call this function when socket functions are no longer needed.
  * On Windows this function terminates use of the Winsock 2 library.
- * This function does nothing on linux.
+ * This function does nothing on Linux.
  *
  * @returns Result of operation.
  *

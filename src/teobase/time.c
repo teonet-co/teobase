@@ -29,7 +29,7 @@ int64_t teotimeGetCurrentTimeUs() {
 
     gettimeofday(&time_value, 0);
 
-    // Cast to int64_t is needed on 32-bit unix systems.
+    // Cast to int64_t is needed on 32-bit Unix systems.
     current_time_us = (int64_t)time_value.tv_sec * MICROSECONDS_IN_SECOND + time_value.tv_usec;
 #endif
 
@@ -53,7 +53,7 @@ int64_t teotimeGetCurrentTimeMs() {
 
     gettimeofday(&time_value, 0);
 
-    // Cast to int64_t is needed on 32-bit unix systems.
+    // Cast to int64_t is needed on 32-bit Unix systems.
     current_time_ms = (int64_t)time_value.tv_sec * MILLISECONDS_IN_SECOND + time_value.tv_usec / MICROSECONDS_IN_MILLISECOND;
 #endif
 
