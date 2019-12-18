@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include "teobase/api.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -29,7 +31,7 @@ enum {
  * @note On 32-bit linux systems return value is limited to maximum value of 32-bit signed integer.
  */
 
-int64_t teotimeGetCurrentTimeUs(void);
+TEOBASE_API int64_t teotimeGetCurrentTimeUs(void);
 
 /**
  * Get current time in milliseconds.
@@ -39,7 +41,7 @@ int64_t teotimeGetCurrentTimeUs(void);
  * @note On 32-bit linux systems return value is limited to maximum value of 32-bit signed integer.
  */
 
-int64_t teotimeGetCurrentTimeMs(void);
+TEOBASE_API int64_t teotimeGetCurrentTimeMs(void);
 
 /**
  * Get time in microseconds between saved moment of time and current time.
@@ -51,7 +53,7 @@ int64_t teotimeGetCurrentTimeMs(void);
  * @note Return value can be negative if time_value is in the future.
  */
 
-int64_t teotimeGetTimePassedUs(int64_t time_value_us);
+TEOBASE_API int64_t teotimeGetTimePassedUs(int64_t time_value_us);
 
 /**
  * Get time in milliseconds between saved moment of time and current time.
@@ -62,7 +64,7 @@ int64_t teotimeGetTimePassedUs(int64_t time_value_us);
  *
  * @note Return value can be negative if time_value is in the future.
  */
-int64_t teotimeGetTimePassedMs(int64_t time_value_ms);
+TEOBASE_API int64_t teotimeGetTimePassedMs(int64_t time_value_ms);
 
 #ifdef __cplusplus
 }

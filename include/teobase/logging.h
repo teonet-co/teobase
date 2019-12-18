@@ -8,6 +8,8 @@
 #ifndef TEOBASE_LOGGING_H
 #define TEOBASE_LOGGING_H
 
+#include "teobase/api.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,32 +46,32 @@ typedef void (*teologOutputFunction_t)(const char *file, int line,
  * Set current output function to @a logger.
  * If @a logger is NULL - disables logging
 */
-void set_log_output_function(teologOutputFunction_t logger);
+TEOBASE_API void set_log_output_function(teologOutputFunction_t logger);
 
 /**
  * Default output function. Produce something like
  * ./src/myFile.cpp:34899 ‘update‘>> [MyTagName|ERR] Kinda log example
 */
-void teolog_output_default(const char *file, int line, const char *func,
-                         TeoLogMessageType type, const char *tag,
-                         const char *message);
+TEOBASE_API void teolog_output_default(const char *file, int line, const char *func,
+                                       TeoLogMessageType type, const char *tag,
+                                       const char *message);
 
 /**
  * Compact output function. Produce something like
  * [MyTagName|ERR] Kinda log example
 */
-void teolog_output_compact(const char *file, int line, const char *func,
-                         TeoLogMessageType type, const char *tag,
-                         const char *message);
+TEOBASE_API void teolog_output_compact(const char *file, int line, const char *func,
+                                       TeoLogMessageType type, const char *tag,
+                                       const char *message);
 
-void log_debug(const char* tag, const char* message);
-void log_info(const char* tag, const char* message);
-void log_warning(const char* tag, const char* message); // Alias for log_important
-void log_important(const char* tag, const char* message);
-void log_error(const char* tag, const char* message);
+TEOBASE_API void log_debug(const char* tag, const char* message);
+TEOBASE_API void log_info(const char* tag, const char* message);
+TEOBASE_API void log_warning(const char* tag, const char* message); // Alias for log_important
+TEOBASE_API void log_important(const char* tag, const char* message);
+TEOBASE_API void log_error(const char* tag, const char* message);
 
-void log_format(const char *file, int line, const char *func,
-                TeoLogMessageType type, const char *tag, const char *fmt, ...);
+TEOBASE_API void log_format(const char *file, int line, const char *func,
+                            TeoLogMessageType type, const char *tag, const char *fmt, ...);
 
 /**
  * Line track - log message along with file/line/function name
