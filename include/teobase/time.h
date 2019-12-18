@@ -3,6 +3,8 @@
  * @brief Utility functions for working with time.
  */
 
+#pragma once
+
 #ifndef TEOBASE_TIME_H
 #define TEOBASE_TIME_H
 
