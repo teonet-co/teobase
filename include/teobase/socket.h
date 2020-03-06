@@ -8,9 +8,9 @@
 #ifndef TEOBASE_SOCKET_H
 #define TEOBASE_SOCKET_H
 
-#include "teobase/platform.h"
+#include "teobase/types.h"
 
-#include <stdint.h>
+#include "teobase/platform.h"
 
 #if defined(TEONET_OS_WINDOWS)
 #include "teobase/windows.h"
@@ -18,12 +18,6 @@
 #include <winsock2.h>
 #else
 #include <sys/time.h>
-#endif
-
-#if defined(TEONET_OS_WINDOWS)
-// Windows does not define POSIX type ssize_t.
-typedef intptr_t ssize_t;
-#else
 #include <unistd.h>
 #endif
 

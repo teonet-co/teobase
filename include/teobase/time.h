@@ -8,7 +8,7 @@
 #ifndef TEOBASE_TIME_H
 #define TEOBASE_TIME_H
 
-#include <stdint.h>
+#include "teobase/types.h"
 
 #include "teobase/api.h"
 

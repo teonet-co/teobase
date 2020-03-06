@@ -1,9 +1,9 @@
 #include "teobase/socket.h"
 
 #include <errno.h>
-#include <limits.h>
-#include <stdint.h>
 #include <string.h>
+
+#include "teobase/types.h"
 
 #include "teobase/platform.h"
 
@@ -19,7 +19,6 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
-#include <sys/types.h>  // To be compatible with historical (BSD) implementations.
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/time.h>
