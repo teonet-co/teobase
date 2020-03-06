@@ -8,9 +8,9 @@
 #ifndef TEOBASE_MUTEX_H
 #define TEOBASE_MUTEX_H
 
-#include "teobase/platform.h"
+#include "teobase/types.h"
 
-#include <stdbool.h>
+#include "teobase/platform.h"
 
 #if defined(TEONET_OS_WINDOWS)
 #include "teobase/windows.h"

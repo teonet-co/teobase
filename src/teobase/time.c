@@ -1,7 +1,8 @@
 #include "teobase/time.h"
 
-#include <stdint.h>
 #include <string.h>
+
+#include "teobase/types.h"
 
 #include "teobase/platform.h"
 
