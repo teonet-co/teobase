@@ -119,7 +119,7 @@ TEOBASE_API teosockConnectResult teosockConnectTimeout(teonetSocket socket, cons
  *
  * @returns TEOSOCK_SOCKET_ERROR on error, amount of received bytes otherwise.
  */
-TEOBASE_API ssize_t teosockRecv(teonetSocket socket, char* data, size_t length);
+TEOBASE_API ssize_t teosockRecv(teonetSocket socket, uint8_t* data, size_t length);
 
 /**
  * Sends data on a connected socket.
@@ -133,7 +133,7 @@ TEOBASE_API ssize_t teosockRecv(teonetSocket socket, char* data, size_t length);
  * @note Amount of bytes sent can be less than the number requested to be sent
  * in the @p length parameter.
  */
-TEOBASE_API ssize_t teosockSend(teonetSocket socket, const char* data, size_t length);
+TEOBASE_API ssize_t teosockSend(teonetSocket socket, const uint8_t* data, size_t length);
 
 /// Enumeration with bit flags for status masks for teosockSelect function.
 typedef enum teosockSelectMode {
