@@ -8,6 +8,8 @@
 #ifndef TEOBASE_LOGGING_H
 #define TEOBASE_LOGGING_H
 
+#include "teobase/types.h"
+
 #include "teobase/api.h"
 
 #ifdef __cplusplus
@@ -109,6 +111,22 @@ TEOBASE_API void log_format(const char *file, int line, const char *func,
   ((COND) ? log_format(__FILE__, __LINE__, __FUNCTION__,                       \
                        TEOLOG_SEVERITY_INFO, tag, __VA_ARGS__)                 \
           : (void)0)
+
+/**
+ * Prints given @a data to @a buffer in form "XX XX XX XX ".
+ *
+ * Prints byte-by-byte, and fills @a buffer via 3 characters at a time
+ * until buffer space is sufficent, up to data_len always appends
+ * terminating NUL character.
+ *
+ * @param buffer Destination buffer, non-null pointer to memory region of @a
+ * buffer_len bytes
+ * @param buffer_len destination buffer length, must be atleast 1 byte (for NUL
+ * character)
+ * @param data source bytes to be dumped, non-null pointer of @a data_len bytes
+ * @param data_len amount of bytes to be dumped, can be zero
+ */
+TEOBASE_API void dump_bytes(char* buffer, int buffer_len, const uint8_t* data, int data_len);
 
 #ifdef __cplusplus
 }
