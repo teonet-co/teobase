@@ -194,28 +194,28 @@ teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* serv
 }
 
 // Receives data from a connected socket.
-ssize_t teosockRecv(teonetSocket socket, char* data, size_t length) {
+ssize_t teosockRecv(teonetSocket socket, uint8_t* data, size_t length) {
 #if defined(TEONET_OS_WINDOWS)
     if (length > (ssize_t)INT_MAX) {
         // Can't receive this much data.
         return TEOSOCK_SOCKET_ERROR;
     }
 
-    return recv(socket, data, (int)length, 0);
+    return recv(socket, (char*)data, (int)length, 0);
 #else
     return read(socket, data, length);
 #endif
 }
 
 // Sends data on a connected socket.
-ssize_t teosockSend(teonetSocket socket, const char* data, size_t length) {
+ssize_t teosockSend(teonetSocket socket, const uint8_t* data, size_t length) {
 #if defined(TEONET_OS_WINDOWS)
     if (length > (ssize_t)INT_MAX) {
         // Can't send this much data.
         return TEOSOCK_SOCKET_ERROR;
     }
 
-    return send(socket, data, (int)length, 0);
+    return send(socket, (const char*)data, (int)length, 0);
 #else
     return write(socket, data, length);
 #endif
