@@ -1,5 +1,11 @@
 #include "teobase/logging.h"
 
+#include <stdarg.h> // va_start, va_end, va_copy
+#include <stdio.h>  // snprintf, vsnprintf, NULL, size_t
+#include <stdlib.h> // malloc, free
+
+#include "teobase/types.h"
+
 #include "teobase/platform.h"
 
 #if defined(TEONET_OS_ANDROID)
@@ -7,10 +13,6 @@
 #elif defined(TEONET_OS_WINDOWS)
 #include "teobase/windows.h"
 #endif
-
-#include <stdarg.h> // va_start, va_end, va_copy
-#include <stdio.h>  // snprintf, vsnprintf, NULL, size_t
-#include <stdlib.h> // malloc, free
 
 static inline const char *log_suffix(TeoLogMessageType value) {
     switch (value) {
@@ -143,4 +145,30 @@ void log_important(const char *tag, const char *message) {
 
 void log_error(const char *tag, const char *message) {
     invoke_log_callback(NULL, -1, NULL, TEOLOG_SEVERITY_ERROR, tag, message);
+}
+
+// Prints given data to a buffer.
+void dump_bytes(char* buffer, int buffer_len, const uint8_t* data, int data_len) {
+    // Target character buffer must be valid.
+    if (buffer == NULL || buffer_len < 1) {
+        return;
+    }
+
+    buffer[0] = 0; // for case of early exit
+
+    if (data == NULL) {
+        return;
+    }
+
+    while (data_len > 0 && buffer_len > 4) {
+#if defined(TEONET_COMPILER_MSVC)
+        sprintf_s(buffer, buffer_len, "%02X ", *data);
+#else
+        sprintf(buffer, "%02X ", *data);
+#endif
+        ++data;
+        --data_len;
+        buffer += 3;
+        buffer_len -= 3;
+    }
 }
