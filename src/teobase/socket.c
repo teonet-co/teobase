@@ -12,7 +12,6 @@
 #include "teobase/windows.h"
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <winsock2.h>
-#include <ws2tcpip.h>
 #else
 #include <arpa/inet.h>
 #include <fcntl.h>
@@ -205,6 +204,79 @@ ssize_t teosockRecv(teonetSocket socket, uint8_t* data, size_t length) {
 #else
     return read(socket, data, length);
 #endif
+}
+
+// Check if error code from recvfrom is recoverable socket error.
+static bool teosockRecvfromErrorIsRecoverable(int error_code) {
+#if defined(TEONET_OS_WINDOWS)
+    return error_code == WSAEWOULDBLOCK;
+#else
+    // EWOULDBLOCK may be not defined or may have same value as EAGAIN.
+#if defined(EWOULDBLOCK) && EWOULDBLOCK != EAGAIN
+    return error_code == EAGAIN || error_code == EWOULDBLOCK;
+#else
+    return error_code == EAGAIN;
+#endif
+#endif
+}
+
+// Check if error code from recvfrom is fatal socket error.
+static bool teosockRecvfromErrorIsFatal(int error_code) {
+#if defined(TEONET_OS_WINDOWS)
+    return error_code == WSAEFAULT || error_code == WSAEINVAL ||
+           error_code == WSAENOTSOCK || error_code == WSAESHUTDOWN;
+#else
+    return error_code == ENOTCONN || error_code == EBADF;
+#endif
+}
+
+// Receives data from a connection-mode or connectionless-mode socket.
+teosockRecvfromResult teosockRecvfrom(
+    teonetSocket socket, uint8_t *buffer, size_t buffer_size,
+    struct sockaddr *__restrict address, socklen_t *address_length,
+    size_t *received_length, int *error_code) {
+    teosockRecvfromResult udp_recvfrom_result = TEOSOCK_RECVFROM_UNKNOWN_ERROR;
+    int flags = 0;
+
+#if defined(TEONET_OS_WINDOWS)
+    if (buffer_size > (size_t)INT_MAX) {
+        buffer_size = (size_t)INT_MAX;
+    }
+    ssize_t recvlen =
+        recvfrom(socket, buffer, (int)buffer_size, flags, address, address_length);
+#else
+    ssize_t recvlen =
+        recvfrom(socket, buffer, buffer_size, flags, address, address_length);
+#endif
+
+    if (recvlen == -1) {
+#if defined(TEONET_OS_WINDOWS)
+        int recv_errno = WSAGetLastError();
+#else
+        int recv_errno = errno;
+#endif
+        if (error_code != NULL) {
+            *error_code = recv_errno;
+        }
+
+        if (teosockRecvfromErrorIsRecoverable(recv_errno)) {
+            udp_recvfrom_result = TEOSOCK_RECVFROM_TRY_AGAIN;
+        } else if (teosockRecvfromErrorIsFatal(recv_errno)) {
+            udp_recvfrom_result = TEOSOCK_RECVFROM_FATAL_ERROR;
+        } else {
+            udp_recvfrom_result = TEOSOCK_RECVFROM_UNKNOWN_ERROR;
+        }
+    } else if (recvlen == 0) {
+        udp_recvfrom_result = TEOSOCK_RECVFROM_ORDERLY_CLOSED;
+    } else {
+        if (received_length != NULL) {
+            *received_length = (size_t)recvlen;
+        }
+
+        udp_recvfrom_result = TEOSOCK_RECVFROM_DATA_RECEIVED;
+    }
+
+    return udp_recvfrom_result;
 }
 
 // Sends data on a connected socket.

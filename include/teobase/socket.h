@@ -16,7 +16,9 @@
 #include "teobase/windows.h"
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <winsock2.h>
+#include <ws2tcpip.h>
 #else
+#include <sys/socket.h>
 #include <sys/time.h>
 #include <unistd.h>
 #endif
@@ -120,6 +122,33 @@ TEOBASE_API teosockConnectResult teosockConnectTimeout(teonetSocket socket, cons
  * @returns TEOSOCK_SOCKET_ERROR on error, amount of received bytes otherwise.
  */
 TEOBASE_API ssize_t teosockRecv(teonetSocket socket, uint8_t* data, size_t length);
+
+/// Result enumeration for teosockRecvfrom() function.
+typedef enum teosockRecvfromResult {
+    TEOSOCK_RECVFROM_DATA_RECEIVED = 0,  ///< Data was received. The length of received message is stored in @a received_length argument. @a address structure is filled with remote address.
+    TEOSOCK_RECVFROM_ORDERLY_CLOSED = 1,  ///< The socket was orderly shut down.
+    TEOSOCK_RECVFROM_TRY_AGAIN = 2,  ///< Recoverable error occurred. No data was received. Error code is returned in @a error_code argument.
+    TEOSOCK_RECVFROM_FATAL_ERROR = 3,  ///< An unrecoverable error occurred. Error code is returned in @a error_code argument.
+    TEOSOCK_RECVFROM_UNKNOWN_ERROR = 4,  ///< An unknown error occurred. Error code is returned in @a error_code argument.
+} teosockRecvfromResult;
+
+/**
+ * Receives data from a connection-mode or connectionless-mode socket.
+ *
+ * @param[in] socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param[in] buffer A pointer to the buffer to store the data.
+ * @param[in] buffer_size The length of buffer in bytes.
+ * @param[out] address A sockaddr structure in which the sending address is to be stored.
+ * @param[in,out] address_length The length of a structure pointed to by @a address argument.
+ * @param[out] received_length A null pointer, or points to a variable in which the length of received message in bytes is to be stored if data was received.
+ * @param[out] error_code A null pointer, or points to a variable in which the error code is to be stored.
+ *
+ * @returns Result of operation.
+ */
+TEOBASE_API teosockRecvfromResult teosockRecvfrom(
+    teonetSocket socket, uint8_t *buffer, size_t buffer_size,
+                struct sockaddr *__restrict address, socklen_t *address_length,
+                size_t *received_length, int *error_code);
 
 /**
  * Sends data on a connected socket.
