@@ -110,7 +110,7 @@ TEOBASE_API teosockConnectResult teosockConnect(teonetSocket socket, const char*
  *
  * @note Socket will be left in non-blocking mode.
  */
-TEOBASE_API teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout_ms);
+TEOBASE_API teosockConnectResult teosockConnectTimeout(teonetSocket* socket, const char* server, uint16_t port, int timeout_ms);
 
 /**
  * Receives data from a connected socket.

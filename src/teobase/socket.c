@@ -1,8 +1,8 @@
 #include "teobase/socket.h"
 
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
-
 #include "teobase/types.h"
 
 #include "teobase/platform.h"
@@ -24,6 +24,7 @@
 #include <unistd.h>
 #endif
 
+#include "teobase/logging.h"
 #include "teobase/time.h"
 
 // Set value of timeval structure to time value specified in milliseconds.
@@ -102,94 +103,175 @@ teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uin
 }
 
 // Establishes a connection to a specified server.
-teosockConnectResult teosockConnectTimeout(teonetSocket socket, const char* server, uint16_t port, int timeout_ms) {
-    struct sockaddr_in serveraddr;
+teosockConnectResult teosockConnectTimeout(teonetSocket* sock, const char* server, uint16_t port, int timeout_ms) {
+    struct addrinfo hints;
+    struct addrinfo *rp;
+    struct addrinfo *res;
+    memset(&hints, '\0', sizeof(struct addrinfo));
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_protocol = IPPROTO_TCP;
+    int fd, n;
+    int connect_result = -1;
 
-    memset(&serveraddr, 0, sizeof(struct sockaddr_in));
-    serveraddr.sin_family = AF_INET;
-    serveraddr.sin_port = htons(port);
+    char port_ch[10];
+    sprintf(port_ch, "%d", port);
+    if ( (n = getaddrinfo(server, port_ch, &hints, &res)) != 0) {
+        LTRACK_E("TeonetClient", "getaddrinfo: %s", gai_strerror(n));
+        return TEOSOCK_CONNECT_HOST_NOT_FOUND;
+    }
 
-#if !defined(TEONET_COMPILER_MINGW)
-    int result = inet_pton(AF_INET, server, &serveraddr.sin_addr);
+    for (rp = res; rp != NULL; rp = rp->ai_next) {
+        fd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+        if (fd == -1) continue;
 
-    // Resolve host address if needed.
-    if (result != 1) {
-        struct hostent* hostp = gethostbyname(server);
-        if (hostp == NULL) {
-            return TEOSOCK_CONNECT_HOST_NOT_FOUND;
+        int set_non_locking_result = teosockSetBlockingMode(fd, TEOSOCK_NON_BLOCKING_MODE);
+
+        if (set_non_locking_result == TEOSOCK_SOCKET_ERROR) {
+            teosockClose(fd);
+            continue;
         }
 
-        memcpy(&serveraddr.sin_addr, hostp->h_addr_list[0], sizeof(serveraddr.sin_addr));
-    }
-#else
-    // MinGW compiler still doest not support inet_pton().
-    serveraddr.sin_addr.s_addr = inet_addr(server);
+        connect_result = connect(fd, rp->ai_addr, rp->ai_addrlen);
+        if (connect_result == 0) {
+            goto success_connect;
+        } else {
+            int in_progress = 0;
 
-    // Resolve host address if needed.
-    if (serveraddr.sin_addr.s_addr == (unsigned long)INADDR_NONE) {
-        struct hostent* hostp = gethostbyname(server);
-        if (hostp == NULL) {
-            return TEOSOCK_CONNECT_HOST_NOT_FOUND;
+            #if defined(TEONET_OS_WINDOWS)
+            int error_code = WSAGetLastError();
+
+            if (error_code == WSAEWOULDBLOCK) {
+                in_progress = 1;
+            }
+            #else
+            int error_code = errno;
+
+            if (error_code == EINPROGRESS) {
+                in_progress = 1;
+            }
+            #endif
+
+            if (in_progress != 1) {
+                teosockClose(fd);
+                continue;
+            }
         }
 
-        memcpy(&serveraddr.sin_addr, hostp->h_addr_list[0], sizeof(serveraddr.sin_addr));
-    }
-#endif
+        int select_result = teosockSelect(fd, TEOSOCK_SELECT_MODE_WRITE | TEOSOCK_SELECT_MODE_ERROR, timeout_ms);
 
-    int set_non_locking_result = teosockSetBlockingMode(socket, TEOSOCK_NON_BLOCKING_MODE);
-
-    if (set_non_locking_result == TEOSOCK_SOCKET_ERROR) {
-        teosockClose(socket);
-        return TEOSOCK_CONNECT_FAILED;
-    }
-
-    // Connect to server.
-    int connect_result = connect(socket, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
-
-    if (connect_result == 0) {
-        return TEOSOCK_CONNECT_SUCCESS;
-    }
-    else {
-        int in_progress = 0;
-
-#if defined(TEONET_OS_WINDOWS)
-        int error_code = WSAGetLastError();
-
-        if (error_code == WSAEWOULDBLOCK) {
-            in_progress = 1;
+        if (select_result == TEOSOCK_SELECT_TIMEOUT || select_result == TEOSOCK_SELECT_ERROR) {
+            teosockClose(fd);
+            continue;
         }
-#else
-        int error_code = errno;
 
-        if (error_code == EINPROGRESS) {
-            in_progress = 1;
+        int error = 0;
+        socklen_t error_len = sizeof(error);
+
+        int getsockopt_result = getsockopt(fd, SOL_SOCKET, SO_ERROR, (char*)&error, &error_len);
+
+        if (getsockopt_result == TEOSOCK_SOCKET_ERROR || error != 0) {
+            teosockClose(fd);
+            continue;
+        } else {
+            goto success_connect;
         }
-#endif
 
-        if (in_progress != 1) {
-            teosockClose(socket);
-            return TEOSOCK_CONNECT_FAILED;
-        }
+        teosockClose(fd);
     }
 
-    int select_result = teosockSelect(socket, TEOSOCK_SELECT_MODE_WRITE | TEOSOCK_SELECT_MODE_ERROR, timeout_ms);
+    freeaddrinfo(res);
+    return TEOSOCK_CONNECT_FAILED;
 
-    if (select_result == TEOSOCK_SELECT_TIMEOUT || select_result == TEOSOCK_SELECT_ERROR) {
-        teosockClose(socket);
-        return TEOSOCK_CONNECT_FAILED;
-    }
-
-    int error = 0;
-    socklen_t error_len = sizeof(error);
-
-    int getsockopt_result = getsockopt(socket, SOL_SOCKET, SO_ERROR, (char*)&error, &error_len);
-
-    if (getsockopt_result == TEOSOCK_SOCKET_ERROR || error != 0) {
-        teosockClose(socket);
-        return TEOSOCK_CONNECT_FAILED;
-    }
-
+success_connect:
+    freeaddrinfo(res);
+    *sock = fd;
     return TEOSOCK_CONNECT_SUCCESS;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// #if !defined(TEONET_COMPILER_MINGW)
+//     int result = inet_pton(AF_INET, server, &serveraddr.sin_addr);
+
+//     // Resolve host address if needed.
+//     if (result != 1) {
+//         struct hostent* hostp = gethostbyname(server);
+//         if (hostp == NULL) {
+//             return TEOSOCK_CONNECT_HOST_NOT_FOUND;
+//         }
+
+//         memcpy(&serveraddr.sin_addr, hostp->h_addr_list[0], sizeof(serveraddr.sin_addr));
+//     }
+// #else
+//     // MinGW compiler still doest not support inet_pton().
+//     serveraddr.sin_addr.s_addr = inet_addr(server);
+
+//     // Resolve host address if needed.
+//     if (serveraddr.sin_addr.s_addr == (unsigned long)INADDR_NONE) {
+//         struct hostent* hostp = gethostbyname(server);
+//         if (hostp == NULL) {
+//             return TEOSOCK_CONNECT_HOST_NOT_FOUND;
+//         }
+
+//         memcpy(&serveraddr.sin_addr, hostp->h_addr_list[0], sizeof(serveraddr.sin_addr));
+//     }
+// #endif
+
+//     int set_non_locking_result = teosockSetBlockingMode(socket, TEOSOCK_NON_BLOCKING_MODE);
+
+//     if (set_non_locking_result == TEOSOCK_SOCKET_ERROR) {
+//         teosockClose(socket);
+//         return TEOSOCK_CONNECT_FAILED;
+//     }
+
+//     // Connect to server.
+//     int connect_result = connect(socket, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+
+//     if (connect_result == 0) {
+//         return TEOSOCK_CONNECT_SUCCESS;
+//     }
+//     else {
+//         int in_progress = 0;
+
+// #if defined(TEONET_OS_WINDOWS)
+//         int error_code = WSAGetLastError();
+
+//         if (error_code == WSAEWOULDBLOCK) {
+//             in_progress = 1;
+//         }
+// #else
+//         int error_code = errno;
+
+//         if (error_code == EINPROGRESS) {
+//             in_progress = 1;
+//         }
+// #endif
+
+//         if (in_progress != 1) {
+//             teosockClose(socket);
+//             return TEOSOCK_CONNECT_FAILED;
+//         }
+//     }
+
+//     int select_result = teosockSelect(socket, TEOSOCK_SELECT_MODE_WRITE | TEOSOCK_SELECT_MODE_ERROR, timeout_ms);
+
+//     if (select_result == TEOSOCK_SELECT_TIMEOUT || select_result == TEOSOCK_SELECT_ERROR) {
+//         teosockClose(socket);
+//         return TEOSOCK_CONNECT_FAILED;
+//     }
+
+//     int error = 0;
+//     socklen_t error_len = sizeof(error);
+
+//     int getsockopt_result = getsockopt(socket, SOL_SOCKET, SO_ERROR, (char*)&error, &error_len);
+
+//     if (getsockopt_result == TEOSOCK_SOCKET_ERROR || error != 0) {
+//         teosockClose(socket);
+//         return TEOSOCK_CONNECT_FAILED;
+//     }
+
+//     return TEOSOCK_CONNECT_SUCCESS;
 }
 
 // Receives data from a connected socket.
