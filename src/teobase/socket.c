@@ -116,7 +116,7 @@ teosockConnectResult teosockConnectTimeout(teonetSocket* socket_descriptor, cons
     int connect_result = -1;
 
     char port_ch[10];
-    sprintf(port_ch, "%d", port);
+    snprintf(port_ch, sizeof(port_ch), "%d", port);
     if ((n = getaddrinfo(server, port_ch, &hints, &res)) != 0) {
         LTRACK_E("TeonetClient", "getaddrinfo: %s", gai_strerror(n));
         return TEOSOCK_CONNECT_HOST_NOT_FOUND;
