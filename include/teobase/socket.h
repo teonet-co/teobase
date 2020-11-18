@@ -82,7 +82,7 @@ typedef enum teosockConnectResult {
 /**
  * Establishes a connection to a specified server.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param server Server IP address or domain name.
  * @param port Port to connect to.
  *
@@ -92,12 +92,15 @@ typedef enum teosockConnectResult {
  * @retval TEOSOCK_CONNECT_HOST_NOT_FOUND if failed to resolve host address.
  * @retval TEOSOCK_CONNECT_FAILED if failed to connect to server.
  */
-TEOBASE_API teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uint16_t port);
+TEOBASE_API teosockConnectResult teosockConnect(
+    teonetSocket socket_descriptor,
+    const char* server,
+    uint16_t port);
 
 /**
  * Establishes a connection to a specified server.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param server Server IP address or domain name.
  * @param port Port to connect to.
  * @param timeout_ms Maximum amount of time to wait before returning error, in milliseconds.
@@ -110,18 +113,25 @@ TEOBASE_API teosockConnectResult teosockConnect(teonetSocket socket, const char*
  *
  * @note Socket will be left in non-blocking mode.
  */
-TEOBASE_API teosockConnectResult teosockConnectTimeout(teonetSocket* socket, const char* server, uint16_t port, int timeout_ms);
+TEOBASE_API teosockConnectResult teosockConnectTimeout(
+    teonetSocket* socket_descriptor,
+    const char* server,
+    uint16_t port,
+    int timeout_ms);
 
 /**
  * Receives data from a connected socket.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param data A pointer to the buffer to store the data.
  * @param length The length of buffer in bytes.
  *
  * @returns TEOSOCK_SOCKET_ERROR on error, amount of received bytes otherwise.
  */
-TEOBASE_API ssize_t teosockRecv(teonetSocket socket, uint8_t* data, size_t length);
+TEOBASE_API ssize_t teosockRecv(
+    teonetSocket socket_descriptor,
+    uint8_t* data,
+    size_t length);
 
 /// Result enumeration for teosockRecvfrom() function.
 typedef enum teosockRecvfromResult {
@@ -135,7 +145,7 @@ typedef enum teosockRecvfromResult {
 /**
  * Receives data from a connection-mode or connectionless-mode socket.
  *
- * @param[in] socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param[in] socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param[in] buffer A pointer to the buffer to store the data.
  * @param[in] buffer_size The length of buffer in bytes.
  * @param[out] address A sockaddr structure in which the sending address is to be stored.
@@ -146,23 +156,30 @@ typedef enum teosockRecvfromResult {
  * @returns Result of operation.
  */
 TEOBASE_API teosockRecvfromResult teosockRecvfrom(
-    teonetSocket socket, uint8_t *buffer, size_t buffer_size,
-                struct sockaddr *__restrict address, socklen_t *address_length,
-                size_t *received_length, int *error_code);
+    teonetSocket socket_descriptor,
+    uint8_t* buffer,
+    size_t buffer_size,
+    struct sockaddr* __restrict address,
+    socklen_t* address_length,
+    size_t* received_length,
+    int* error_code);
 
 /**
  * Sends data on a connected socket.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
- *
- * @returns TEOSOCK_SOCKET_ERROR on error, amount of sent bytes otherwise.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param data A pointer to the buffer with data.
  * @param length The length of data to be transmitted, in bytes.
+ *
+ * @returns TEOSOCK_SOCKET_ERROR on error, amount of sent bytes otherwise.
  *
  * @note Amount of bytes sent can be less than the number requested to be sent
  * in the @p length parameter.
  */
-TEOBASE_API ssize_t teosockSend(teonetSocket socket, const uint8_t* data, size_t length);
+TEOBASE_API ssize_t teosockSend(
+    teonetSocket socket_descriptor,
+    const uint8_t* data,
+    size_t length);
 
 /// Enumeration with bit flags for status masks for teosockSelect function.
 typedef enum teosockSelectMode {
@@ -181,7 +198,7 @@ typedef enum teosockSelectResult {
 /**
  * Determines the status of the socket, waiting if necessary, to perform synchronous operation.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param status_mask A combination of teosockSelectMode flags defining modes to check.
  * @param timeout_ms The amount of time to wait before returning timeout, in milliseconds.
  *
@@ -191,19 +208,22 @@ typedef enum teosockSelectResult {
  * @retval TEOSOCK_SELECT_TIMEOUT if no data was received before reaching timeout.
  * @retval TEOSOCK_SELECT_ERROR if an error occurred.
  */
-TEOBASE_API teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout_ms);
+TEOBASE_API teosockSelectResult teosockSelect(
+    teonetSocket socket_descriptor,
+    int status_mask,
+    int timeout_ms);
 
 /**
  * Closes a socket.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  *
  * @returns Result of operation.
  *
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-TEOBASE_API int teosockClose(teonetSocket socket);
+TEOBASE_API int teosockClose(teonetSocket socket_descriptor);
 
 /// Enumeration for specifying socket shutdown mode in teosockShutdown() function.
 typedef enum teosockShutdownMode {
@@ -219,7 +239,7 @@ typedef enum teosockShutdownMode {
 /**
  * Disables sends and/or receives on a socket.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param mode Socket shutdown mode. See #teosockShutdownMode.
  *
  * @returns Result of operation.
@@ -227,7 +247,9 @@ typedef enum teosockShutdownMode {
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-TEOBASE_API int teosockShutdown(teonetSocket socket, teosockShutdownMode mode);
+TEOBASE_API int teosockShutdown(
+    teonetSocket socket_descriptor,
+    teosockShutdownMode mode);
 
 /// Enumeration for specifying socket blocking mode in teosockShutdown() function.
 typedef enum teosockBlockingMode {
@@ -240,7 +262,7 @@ typedef enum teosockBlockingMode {
 /**
  * Set blocking or non-blocking mode on a socket.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  * @param blocking_mode Blocking mode to set socket to.
  *
  * @returns Result of operation.
@@ -248,12 +270,14 @@ typedef enum teosockBlockingMode {
  * @retval TEOSOCK_SOCKET_SUCCESS if operation completed successfully.
  * @retval TEOSOCK_SOCKET_ERROR if operation failed.
  */
-TEOBASE_API int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode blocking_mode);
+TEOBASE_API int teosockSetBlockingMode(
+    teonetSocket socket_descriptor,
+    teosockBlockingMode blocking_mode);
 
 /**
  * Set TCP_NODELAY option on a socket.
  *
- * @param socket Socket descriptor obtained using teosockCreateTcp() function.
+ * @param socket_descriptor Socket descriptor obtained using teosockCreateTcp() function.
  *
  * @returns Result of operation.
  *
@@ -265,7 +289,7 @@ TEOBASE_API int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode 
  * and desired because setting TCP_NODELAY can have a significant negative impact
  * on network and application performance.
  */
-TEOBASE_API int teosockSetTcpNodelay(teonetSocket socket);
+TEOBASE_API int teosockSetTcpNodelay(teonetSocket socket_descriptor);
 
 /**
  * Initialize socket library.

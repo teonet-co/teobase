@@ -59,7 +59,7 @@ teonetSocket teosockCreateTcp() {
 }
 
 // Establishes a connection to a specified server.
-teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uint16_t port) {
+teosockConnectResult teosockConnect(teonetSocket socket_descriptor, const char* server, uint16_t port) {
     struct sockaddr_in serveraddr;
 
     memset(&serveraddr, 0, sizeof(struct sockaddr_in));
@@ -94,7 +94,7 @@ teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uin
 #endif
 
     // Connect to server.
-    int connect_result = connect(socket, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+    int connect_result = connect(socket_descriptor, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
     if (connect_result != 0 && errno != EINPROGRESS) {
         return TEOSOCK_CONNECT_FAILED;
     }
@@ -103,10 +103,10 @@ teosockConnectResult teosockConnect(teonetSocket socket, const char* server, uin
 }
 
 // Establishes a connection to a specified server.
-teosockConnectResult teosockConnectTimeout(teonetSocket* sock, const char* server, uint16_t port, int timeout_ms) {
+teosockConnectResult teosockConnectTimeout(teonetSocket* socket_descriptor, const char* server, uint16_t port, int timeout_ms) {
     struct addrinfo hints;
-    struct addrinfo *rp;
-    struct addrinfo *res;
+    struct addrinfo* rp;
+    struct addrinfo* res;
     memset(&hints, '\0', sizeof(struct addrinfo));
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_family = AF_UNSPEC;
@@ -116,7 +116,7 @@ teosockConnectResult teosockConnectTimeout(teonetSocket* sock, const char* serve
 
     char port_ch[10];
     sprintf(port_ch, "%d", port);
-    if ( (n = getaddrinfo(server, port_ch, &hints, &res)) != 0) {
+    if ((n = getaddrinfo(server, port_ch, &hints, &res)) != 0) {
         LTRACK_E("TeonetClient", "getaddrinfo: %s", gai_strerror(n));
         return TEOSOCK_CONNECT_HOST_NOT_FOUND;
     }
@@ -185,9 +185,8 @@ teosockConnectResult teosockConnectTimeout(teonetSocket* sock, const char* serve
 
 success_connect:
     freeaddrinfo(res);
-    *sock = fd;
+    *socket_descriptor = fd;
     return TEOSOCK_CONNECT_SUCCESS;
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -275,16 +274,16 @@ success_connect:
 }
 
 // Receives data from a connected socket.
-ssize_t teosockRecv(teonetSocket socket, uint8_t* data, size_t length) {
+ssize_t teosockRecv(teonetSocket socket_descriptor, uint8_t* data, size_t length) {
 #if defined(TEONET_OS_WINDOWS)
     if (length > (ssize_t)INT_MAX) {
         // Can't receive this much data.
         return TEOSOCK_SOCKET_ERROR;
     }
 
-    return recv(socket, (char*)data, (int)length, 0);
+    return recv(socket_descriptor, (char*)data, (int)length, 0);
 #else
-    return read(socket, data, length);
+    return read(socket_descriptor, data, length);
 #endif
 }
 
@@ -314,9 +313,9 @@ static bool teosockRecvfromErrorIsFatal(int error_code) {
 
 // Receives data from a connection-mode or connectionless-mode socket.
 teosockRecvfromResult teosockRecvfrom(
-    teonetSocket socket, uint8_t *buffer, size_t buffer_size,
-    struct sockaddr *__restrict address, socklen_t *address_length,
-    size_t *received_length, int *error_code) {
+    teonetSocket socket_descriptor, uint8_t* buffer, size_t buffer_size,
+    struct sockaddr* __restrict address, socklen_t* address_length,
+    size_t* received_length, int* error_code) {
     teosockRecvfromResult udp_recvfrom_result = TEOSOCK_RECVFROM_UNKNOWN_ERROR;
     int flags = 0;
 
@@ -325,10 +324,10 @@ teosockRecvfromResult teosockRecvfrom(
         buffer_size = (size_t)INT_MAX;
     }
     ssize_t recvlen =
-        recvfrom(socket, buffer, (int)buffer_size, flags, address, address_length);
+        recvfrom(socket_descriptor, buffer, (int)buffer_size, flags, address, address_length);
 #else
     ssize_t recvlen =
-        recvfrom(socket, buffer, buffer_size, flags, address, address_length);
+        recvfrom(socket_descriptor, buffer, buffer_size, flags, address, address_length);
 #endif
 
     if (recvlen == -1) {
@@ -362,27 +361,27 @@ teosockRecvfromResult teosockRecvfrom(
 }
 
 // Sends data on a connected socket.
-ssize_t teosockSend(teonetSocket socket, const uint8_t* data, size_t length) {
+ssize_t teosockSend(teonetSocket socket_descriptor, const uint8_t* data, size_t length) {
 #if defined(TEONET_OS_WINDOWS)
     if (length > (ssize_t)INT_MAX) {
         // Can't send this much data.
         return TEOSOCK_SOCKET_ERROR;
     }
 
-    return send(socket, (const char*)data, (int)length, 0);
+    return send(socket_descriptor, (const char*)data, (int)length, 0);
 #else
-    return write(socket, data, length);
+    return write(socket_descriptor, data, length);
 #endif
 }
 
 // Determines the status of the socket, waiting if necessary, to perform synchronous operation.
-teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int timeout_ms) {
+teosockSelectResult teosockSelect(teonetSocket socket_descriptor, int status_mask, int timeout_ms) {
     fd_set socket_fd_set;
     memset(&socket_fd_set, 0, sizeof(socket_fd_set));
 
     // Create a descriptor set with specified socket.
     FD_ZERO(&socket_fd_set);
-    FD_SET(socket, &socket_fd_set);
+    FD_SET(socket_descriptor, &socket_fd_set);
 
     fd_set* read_fd_set = (status_mask & TEOSOCK_SELECT_MODE_READ) ? &socket_fd_set : NULL;
     fd_set* write_fd_set = (status_mask & TEOSOCK_SELECT_MODE_WRITE) ? &socket_fd_set : NULL;
@@ -396,7 +395,7 @@ teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int time
 #if defined(TEONET_OS_WINDOWS)
     int result = select(0, read_fd_set, write_fd_set, error_fd_set, &timeval_timeout);
 #else
-    int result = select(socket + 1, read_fd_set, write_fd_set, error_fd_set, &timeval_timeout);
+    int result = select(socket_descriptor + 1, read_fd_set, write_fd_set, error_fd_set, &timeval_timeout);
 #endif
 
     // Make sure that return value is correct.
@@ -408,27 +407,27 @@ teosockSelectResult teosockSelect(teonetSocket socket, int status_mask, int time
 }
 
 // Closes a socket.
-int teosockClose(teonetSocket socket) {
+int teosockClose(teonetSocket socket_descriptor) {
 #if defined(TEONET_OS_WINDOWS)
-    return closesocket(socket);
+    return closesocket(socket_descriptor);
 #else
-    return close(socket);
+    return close(socket_descriptor);
 #endif
 }
 
 // Disables sends and/or receives on a socket.
-int teosockShutdown(teonetSocket socket, teosockShutdownMode mode) {
-    return shutdown(socket, mode);
+int teosockShutdown(teonetSocket socket_descriptor, teosockShutdownMode mode) {
+    return shutdown(socket_descriptor, mode);
 }
 
 // Sets blocking or non-blocking mode for specified socket.
-int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode blocking_mode) {
+int teosockSetBlockingMode(teonetSocket socket_descriptor, teosockBlockingMode blocking_mode) {
 #if defined(TEONET_OS_WINDOWS)
     u_long mode = (u_long)blocking_mode;
 
-    return ioctlsocket(socket, FIONBIO, &mode);
+    return ioctlsocket(socket_descriptor, FIONBIO, &mode);
 #else
-    int flags = fcntl(socket, F_GETFL, 0);
+    int flags = fcntl(socket_descriptor, F_GETFL, 0);
 
     if (flags == -1) {
         return TEOSOCK_SOCKET_ERROR;
@@ -444,7 +443,7 @@ int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode blocking_mod
         if (new_flags == flags) {
             result = TEOSOCK_SOCKET_SUCCESS;
         } else {
-            result = fcntl(socket, F_SETFL, new_flags);
+            result = fcntl(socket_descriptor, F_SETFL, new_flags);
 
             if (result != TEOSOCK_SOCKET_ERROR) {
                 result = TEOSOCK_SOCKET_SUCCESS;
@@ -457,10 +456,10 @@ int teosockSetBlockingMode(teonetSocket socket, teosockBlockingMode blocking_mod
 }
 
 // Set TCP_NODELAY option on specified socket.
-int teosockSetTcpNodelay(teonetSocket socket) {
+int teosockSetTcpNodelay(teonetSocket socket_descriptor) {
     int flag = 1;
 
-    int result = setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(flag));
+    int result = setsockopt(socket_descriptor, IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(flag));
 
     if (result != TEOSOCK_SOCKET_SUCCESS) {
         result = TEOSOCK_SOCKET_ERROR;
