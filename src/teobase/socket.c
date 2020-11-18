@@ -103,6 +103,7 @@ teosockConnectResult teosockConnect(teonetSocket socket_descriptor, const char* 
 }
 
 // Establishes a connection to a specified server.
+// TODO: Cleanup and double check this function implementation.
 teosockConnectResult teosockConnectTimeout(teonetSocket* socket_descriptor, const char* server, uint16_t port, int timeout_ms) {
     struct addrinfo hints;
     struct addrinfo* rp;
@@ -189,6 +190,7 @@ success_connect:
     return TEOSOCK_CONNECT_SUCCESS;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Legacy implementation.
 
 // #if !defined(TEONET_COMPILER_MINGW)
 //     int result = inet_pton(AF_INET, server, &serveraddr.sin_addr);
