@@ -1,0 +1,81 @@
+jobs:
+- job: build_linux
+  pool:
+    vmImage: 'ubuntu-18.04'
+    # vmImage: 'ubuntu-16.04'
+  # container: 'buildpack-deps:bionic'
+  steps:
+  - bash: 'autoreconf --install'
+  - bash: './configure CPPFLAGS=-DNDEBUG'
+  - bash: 'make'
+- job: build_windows_x86_static
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln'
+      platform: x86
+      configuration: Release
+      msbuildArguments: -target:teobase-static
+- job: build_windows_x86_64_static
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln'
+      platform: x64
+      configuration: Release
+      msbuildArguments: -target:teobase-static
+- job: build_windows_x86_dynamic
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln'
+      platform: x86
+      configuration: Release
+      msbuildArguments: -target:teobase-dynamic
+- job: build_windows_x86_64_dynamic
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: MSBuild@1
+    inputs:
+      solution: 'msvc/teobase.sln'
+      platform: x64
+      configuration: Release
+      msbuildArguments: -target:teobase-dynamic
+- job: build_android
+  pool:
+    vmImage: 'ubuntu-18.04'
+  steps:
+  - task: Gradle@2
+    inputs:
+      workingDirectory: 'gradle'
+      gradleWrapperFile: 'gradle/gradlew'
+      tasks: 'assembleRelease'
+- job: build_macos
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - task: Xcode@5
+    inputs:
+      actions: 'build'
+      configuration: 'Release'
+      sdk: 'macosx'
+      xcWorkspacePath: 'xcode/teobase-macos-bundle.xcodeproj/project.xcworkspace'
+      scheme: 'teobase'
+- job: build_ios
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - task: Xcode@5
+    inputs:
+      actions: 'build'
+      configuration: 'Release'
+      sdk: 'iphoneos'
+      xcWorkspacePath: 'xcode/teobase-ios.xcodeproj/project.xcworkspace'
+      scheme: 'teobase'

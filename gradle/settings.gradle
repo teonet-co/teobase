@@ -1,0 +1,2 @@
+include ':teobase-dynamic'
+rootProject.name='teobase'

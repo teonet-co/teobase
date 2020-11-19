@@ -1,0 +1,328 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A212E3772383157900B41DEA /* logging.h in Headers */ = {isa = PBXBuildFile; fileRef = A212E3722383157900B41DEA /* logging.h */; };
+		A212E3782383157900B41DEA /* time.h in Headers */ = {isa = PBXBuildFile; fileRef = A212E3732383157900B41DEA /* time.h */; };
+		A212E3792383157900B41DEA /* socket.h in Headers */ = {isa = PBXBuildFile; fileRef = A212E3742383157900B41DEA /* socket.h */; };
+		A212E37A2383157900B41DEA /* platform.h in Headers */ = {isa = PBXBuildFile; fileRef = A212E3752383157900B41DEA /* platform.h */; };
+		A212E37B2383157900B41DEA /* windows.h in Headers */ = {isa = PBXBuildFile; fileRef = A212E3762383157900B41DEA /* windows.h */; };
+		A212E3802383159A00B41DEA /* socket.c in Sources */ = {isa = PBXBuildFile; fileRef = A212E37D2383159A00B41DEA /* socket.c */; };
+		A212E3812383159A00B41DEA /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = A212E37E2383159A00B41DEA /* time.c */; };
+		A212E3822383159A00B41DEA /* logging.c in Sources */ = {isa = PBXBuildFile; fileRef = A212E37F2383159A00B41DEA /* logging.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A212E3722383157900B41DEA /* logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = logging.h; path = ../include/teobase/logging.h; sourceTree = "<group>"; };
+		A212E3732383157900B41DEA /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = time.h; path = ../include/teobase/time.h; sourceTree = "<group>"; };
+		A212E3742383157900B41DEA /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = socket.h; path = ../include/teobase/socket.h; sourceTree = "<group>"; };
+		A212E3752383157900B41DEA /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform.h; path = ../include/teobase/platform.h; sourceTree = "<group>"; };
+		A212E3762383157900B41DEA /* windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = windows.h; path = ../include/teobase/windows.h; sourceTree = "<group>"; };
+		A212E37D2383159A00B41DEA /* socket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = socket.c; path = ../src/teobase/socket.c; sourceTree = "<group>"; };
+		A212E37E2383159A00B41DEA /* time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = time.c; path = ../src/teobase/time.c; sourceTree = "<group>"; };
+		A212E37F2383159A00B41DEA /* logging.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = logging.c; path = ../src/teobase/logging.c; sourceTree = "<group>"; };
+		A2EEFA85238314F70072B4DD /* libteobase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libteobase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A2EEFA83238314F70072B4DD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A212E3712383156D00B41DEA /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				A212E3722383157900B41DEA /* logging.h */,
+				A212E3752383157900B41DEA /* platform.h */,
+				A212E3742383157900B41DEA /* socket.h */,
+				A212E3732383157900B41DEA /* time.h */,
+				A212E3762383157900B41DEA /* windows.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		A212E37C2383157F00B41DEA /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A212E37F2383159A00B41DEA /* logging.c */,
+				A212E37D2383159A00B41DEA /* socket.c */,
+				A212E37E2383159A00B41DEA /* time.c */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		A2EEFA7C238314F70072B4DD = {
+			isa = PBXGroup;
+			children = (
+				A212E3712383156D00B41DEA /* Headers */,
+				A212E37C2383157F00B41DEA /* Source */,
+				A2EEFA86238314F70072B4DD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A2EEFA86238314F70072B4DD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2EEFA85238314F70072B4DD /* libteobase.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A2EEFA81238314F70072B4DD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A212E3792383157900B41DEA /* socket.h in Headers */,
+				A212E37B2383157900B41DEA /* windows.h in Headers */,
+				A212E37A2383157900B41DEA /* platform.h in Headers */,
+				A212E3772383157900B41DEA /* logging.h in Headers */,
+				A212E3782383157900B41DEA /* time.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A2EEFA84238314F70072B4DD /* teobase */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A2EEFA89238314F70072B4DD /* Build configuration list for PBXNativeTarget "teobase" */;
+			buildPhases = (
+				A2EEFA81238314F70072B4DD /* Headers */,
+				A2EEFA82238314F70072B4DD /* Sources */,
+				A2EEFA83238314F70072B4DD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = teobase;
+			productName = teobase;
+			productReference = A2EEFA85238314F70072B4DD /* libteobase.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A2EEFA7D238314F70072B4DD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1120;
+				ORGANIZATIONNAME = example;
+				TargetAttributes = {
+					A2EEFA84238314F70072B4DD = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
+				};
+			};
+			buildConfigurationList = A2EEFA80238314F70072B4DD /* Build configuration list for PBXProject "teobase-macos-static" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A2EEFA7C238314F70072B4DD;
+			productRefGroup = A2EEFA86238314F70072B4DD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A2EEFA84238314F70072B4DD /* teobase */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A2EEFA82238314F70072B4DD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A212E3812383159A00B41DEA /* time.c in Sources */,
+				A212E3822383159A00B41DEA /* logging.c in Sources */,
+				A212E3802383159A00B41DEA /* socket.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A2EEFA87238314F70072B4DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A2EEFA88238314F70072B4DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		A2EEFA8A238314F70072B4DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../include,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		A2EEFA8B238314F70072B4DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../include,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A2EEFA80238314F70072B4DD /* Build configuration list for PBXProject "teobase-macos-static" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A2EEFA87238314F70072B4DD /* Debug */,
+				A2EEFA88238314F70072B4DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A2EEFA89238314F70072B4DD /* Build configuration list for PBXNativeTarget "teobase" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A2EEFA8A238314F70072B4DD /* Debug */,
+				A2EEFA8B238314F70072B4DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A2EEFA7D238314F70072B4DD /* Project object */;
+}
